@@ -4,41 +4,48 @@
 # 		CREATED BY: maik.alberto@hotmail.com				 #
 #--------------------------------------------------------------------------------#
 
-eval `/opt/luw/proccgi $*`
-echo -e "Content-type: text/html\n\n"
+eval `/usr/lib/cgi-bin/proccgi $*`
+if [ -z $1 ]; then
+  echo -e "Content-type: text/html\n\n"
+fi
 
 #--------------------------------------------------------------------------------#
-#			     VARIAVEIS INICIAIS					 #
+#				VARIVEIS					 #
 #--------------------------------------------------------------------------------#
 #-->Hostname
 hostname=`hostname`
 #-->Secutiry Shell comand
 ssh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $REMOTE_USER@$hostname"
 #-->Corte para pegar nome do arquivo
-luw=`echo $0 | rev | cut -d / -f1 | rev`
+form=`echo $0 | rev | cut -d / -f1 | rev`
 #-->Corte para pegar usuario na URL
 puser=$(echo $REQUEST_URI | cut -d "~" -f2 | cut -d "/" -f1)
 
 #--------------------------------------------------------------------------------#
-#	   CONFERENCIA USUARIO LOGADO COM PAGINA ACESSADA - SECURITY		 #
+#	   COMPARACAO USUARIO LOGADO COM PAGINA ACESSADA - SECURITY		 #
 #--------------------------------------------------------------------------------#
+
 if [ $puser != $REMOTE_USER ];
   then
-	rodared='<meta http-equiv="refresh" content="0;url=http://'$SERVER_NAME'/~'$REMOTE_USER'/cgi-bin/'$luw'">'
+	rodared='<meta http-equiv="refresh" content="0;url=http://'$SERVER_NAME'/~'$REMOTE_USER'/cgi-bin/'$form'">'
 	echo $rodared
         exit 0
-fi 2> /dev/null
+fi
 
 #--------------------------------------------------------------------------------#
-#	CATALOGO DE COMANDOS - INDICE:NOMEBOTAO:COMANDO - CRIACAO ARQUIVO	 #
+#			CONFERENCIA DE USUARIO NA URL				 #
 #--------------------------------------------------------------------------------#
-catcom=~/.catcom.lxc
-eval $ssh echo "1:info:$ssh lxc-info -n" > $catcom 2> /dev/null
-eval $ssh echo "2:start:$ssh lxc-start -n" >> $catcom 2> /dev/null
-eval $ssh echo "3:stop:$ssh lxc-stop -n" >> $catcom 2> /dev/null
-eval $ssh echo "4:freeze:$ssh lxc-freeze -n" >> $catcom 2> /dev/null
-eval $ssh echo "5:unfreeze:$ssh lxc-unfreeze -n" >> $catcom 2> /dev/null
-eval $ssh echo "6:destroy:$ssh lxc-destroy -n" >> $catcom 2> /dev/null
+
+#--------------------------------------------------------------------------------#
+#			COMANDOS CRIACAO ARQUIVO				 #
+#--------------------------------------------------------------------------------#
+lcomandos=~/.comandos.lxc
+eval $ssh echo "1:info:$ssh lxc-info -n" > $lcomandos
+eval $ssh echo "2:start:$ssh lxc-start -n" >> $lcomandos
+eval $ssh echo "3:stop:$ssh lxc-stop -n" >> $lcomandos
+eval $ssh echo "4:freeze:$ssh lxc-freeze -n" >> $lcomandos
+eval $ssh echo "5:unfreeze:$ssh lxc-unfreeze -n" >> $lcomandos
+eval $ssh echo "6:destroy:" >> $lcomandos
 
 #--------------------------------------------------------------------------------#
 #			BOTOES CABECALHO - EXECUCAO				 #
@@ -47,40 +54,37 @@ eval $ssh echo "6:destroy:$ssh lxc-destroy -n" >> $catcom 2> /dev/null
 #===============================[BOTAO HOME]=====================================#
 if [ $FORM_top = "Home" ]; then 
 
-fi 2> /dev/null
+fi
 
 #============================[BOTAO CHECKCONFIG]=================================#
 if [ $FORM_top = "Check Config" ]; then 
-	echo "<form method='post' action='$luw'>"
-	echo "<input type='submit' name='top'  value='Home'>" 
-	echo "</form>"
 	echo "<pre>"
-	echo "<h2>LXC-CHECKCONFIG</h1>"
-	lxc-checkconfig | sed 's/\[0;39m/ / ; s/\[1;32m/ /'
+        $0 retorno
+#	/usr/lib/cgi-bin/bcc
+	lxc-checkconfig
 	echo "</pre>"
 	exit 0
-fi 2> /dev/null
+fi
 
 #===========================[BOTAO CREATE CONTAINER]=============================#
 if [ $FORM_top = "New Container" ]; then 
 #------->Baixa pagina de imagens LXC e cria lista das Distros usada no FORM 
-	ipage=~/.imgpage.html
-	ilist=~/.imglist.lxc
-	wget -q http://images.linuxcontainers.org/ -O $ipage
-	lynx -dump -width 120 $ipage > $ilist
-	cini=`cat -n $ilist | grep "Distribution Release Architecture" | awk {'print $1'}`
-	cfin=`cat -n $ilist | grep "_________________________________" | awk {'print $1'}`
+	wget -q http://images.linuxcontainers.org/ -O /tmp/lxcimg.html
+	lynx -dump -width 120 /tmp/lxcimg.html > /tmp/lcreate.txt
+#	rm -f index*.*
+	cini=`cat -n /tmp/lcreate.txt | grep "Distribution Release Architecture" | awk {'print $1'}`
+	cfin=`cat -n /tmp/lcreate.txt | grep "_________________________________" | awk {'print $1'}`
 	de=`expr $cfin - $cini - 1`
 	ate=`expr $cfin - 1`
-	distro=( `cat $ilist | head -n $ate | tail -n $de | awk {'print $1"_"$2"_"$3'}` )
-	rm -rf $ipage
-	rm -rf $ilist
+	distro=( `cat /tmp/lcreate.txt | head -n $ate | tail -n $de | awk {'print $1"_"$2"_"$3'}` )
+	rm -rf /tmp/lcreate.txt
+	rm -rf /tmp/lxcimg.html
 
 #------->Form para criacao de container
 
-	echo "<form method='post' action='$luw'>"
+	echo "<form method='post' action='$form'>"
 	echo "<h2>Novo Container</h2>"
-	echo "Name:"
+	echo "Nome:"
 	echo " <input type='text' name='ncont' maxlength='50' size='30'>"
 	echo "Distro:"
 	echo "<select name='dcont'>"
@@ -92,39 +96,40 @@ if [ $FORM_top = "New Container" ]; then
 	echo  "</select>"
 	echo  "<input type='submit' value='Criar'>"
 	echo  "</form>"
-fi 2> /dev/null
+fi
 
 #--------------------------------------------------------------------------------#
 #		BOTOES CONTAINERS  - FILEIRA DE BOTOES - EXECUCAO		 #
 #--------------------------------------------------------------------------------#
 #=======================EXECUTANDO COMANDO DO BOTAO CLICADO======================#
-if [ $FORM_botao != "" ]; then
-	ivn=`echo $FORM_botao | awk -F: {'print $1'}` 
+if [ $FORM_nome != "" ]; then
+	teste=`echo $FORM_nome | awk -F: {'print $1'}` 
 	echo "<pre>"
-	comand=`cat -n $catcom | grep $ivn | awk -F: {'print $3'}`
-	container=`echo $FORM_botao | awk -F: {'print $2'}`
+#	comand=`cat -n /usr/lib/cgi-bin/comands.txt | grep $teste | awk -F: {'print $3'}`
+	comand=`cat -n $lcomandos | grep $teste | awk -F: {'print $3'}`
+	container=`echo $FORM_nome | awk -F: {'print $2'}`
 	var2=`echo $comand $container`
 	eval $var2
-fi 2> /dev/null
+fi
 
 #--------------------------------------------------------------------------------#
 #			BOTAO CRIAR CONTAINER - EXECUCAO			 #
 #--------------------------------------------------------------------------------#
 #==================================LXC-CREATE====================================#
 if [ $FORM_ncont != "" ]; then
-	contname=$FORM_ncont
+	nome=$FORM_ncont
 	distro=`echo $FORM_dcont | awk -F_ {'print $1'}`
 	release=`echo $FORM_dcont | awk -F_ {'print $2'}`
 	arquit=`echo $FORM_dcont | awk -F_ {'print $3'}`
-	echo "<pre>"
-	eval $ssh lxc-create -t download -n $contname -- -d $distro -r $release -a $arquit 2> /dev/null
-	echo "</pre>"
-fi 2> /dev/null
+	echo lxc-create -t download -n $nome -- -d $distro -r $release -a $arquit
+	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@luw lxc-create -t download -n $nome -- -d $distro -r $release -a $arquit
+	#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@luw lxc-create -t busybox -n busyweb
+fi
 
 #--------------------------------------------------------------------------------#
 #			HTML - BOTOES CABECALHO	- CRIACAO			 #
 #--------------------------------------------------------------------------------#
-echo "<form method='post' action='$luw'>"
+echo "<form method='post' action='$form'>"
 echo "<input type='submit' name='top'  value='Home'>" "<input type='submit' name='top'  value='Check Config'>" "<input type='submit' name='top' value='New Container'>"
 echo "</form>"
 
@@ -132,8 +137,10 @@ echo "</form>"
 #		    CRIANDO LISTA DE CONTAINERS EXISTENTES			 #
 #--------------------------------------------------------------------------------#
 
-lslxc=~/.contdo$REMOTE_USER.lxc
-eval $ssh lxc-ls -f > $lslxc 2> /dev/null
+#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@luw lxc-ls -f > /tmp/lista$REMOTE_USER.txt
+lista=~/.contdo$REMOTE_USER.lxc
+#eval $ssh lxc-ls -f > /tmp/lista$REMOTE_USER.txt
+eval $ssh lxc-ls -f > $lista
 
 #--------------------------------------------------------------------------------#
 #			    VARIAVES AUXILIARES SHELL				 #
@@ -145,7 +152,8 @@ eval $ssh lxc-ls -f > $lslxc 2> /dev/null
     bp2="awk -F: {'print \$2'}"
     bp3="awk -F: {'print \$3'}"
 #-->pegar nomes dos conternes na lista gerado pelo lxc-ls
-    n=`wc -l $lslxc | eval $pil`
+#    n=`wc -l /tmp/lista$REMOTE_USER.txt | eval $pil`
+    n=`wc -l $lista | eval $pil`
 #-->numero de linhas cabecalho LXCv2=1 LXC<2=2
     lc=1 
 
@@ -153,21 +161,23 @@ eval $ssh lxc-ls -f > $lslxc 2> /dev/null
 #	FUNCAO BOTAO - FILEIRA DE BOTOES NA LISTA DE CONTAINERS			 #
 #--------------------------------------------------------------------------------#
 #------->Funca botao = Gerar botaoes de comandos para conatiners-----------------#
-#Sinopse:									 #
-#   Pega nome do container para gerar value para usar no form; 			 #
+#Faz o que saporra?								 #
+#   Pega nome do container para gerar value para usar no form  			 #
 #   Array com as ordens do descritas no comando                			 #
-#       For verifica quantidades de botao, da nome, valor e gera botao		 #
+#       For verifica quantidades de botao, da nome, valor e gera   		 #
 #--------------------------------------------------------------------------------#
 function botao()
 {
 	vbotao=`echo $lcont | eval $pil`
-	nbotao=($(< $catcom | eval $bp2 ))
-	indice=($(< $catcom | eval $bp1 )) 
+#	nbotao=($(< /usr/lib/cgi-bin/comands.txt | eval $bp2 ))
+#	indice=($(< /usr/lib/cgi-bin/comands.txt | eval $bp1 )) 
+	nbotao=($(< $lcomandos | eval $bp2 ))
+	indice=($(< $lcomandos | eval $bp1 )) 
 
         for (( b=1; b<=${#nbotao[@]}; b++ ))
           do
 	  value=$indice[$b]":"$vbotao":"$nbotao[$b]
-          printf "<button type='submit' name='botao' value=$value>$nbotao[$b]</button>"
+          printf "<button type='submit' name='nome' value=$value>$nbotao[$b]</button>"
          done
 }
 
@@ -176,18 +186,20 @@ function botao()
 #--------------------------------------------------------------------------------#
 #-------> Inicio da tabela dos caontaines
 #-------> html misurado com shell - vitamina old school
-echo "<form method='post' action='$luw'>"
+echo "<form method='post' action='$form'>"
  echo  "<table border=1>"
 	echo   "<tr>"
 	echo    "<td><pre>"
-		    head -n$lc $lslxc
+#		    head -n$lc /tmp/lista$REMOTE_USER.txt
+		    head -n$lc $lista
 	echo 	"</pre></td>"
 	echo    "<td><center>$REMOTE_USER</center></td>"
 	echo    "</tr>"
 		     until [ $lc = $n ];
   do
 			lc=`expr $lc + 1`
-			lcont=`head -n $lc $lslxc | tail -1`
+#			lcont=`head -n $lc /tmp/lista$REMOTE_USER.txt | tail -1`
+			lcont=`head -n $lc $lista | tail -1`
 			state=`echo $lcont | awk {'print $2'}`
  	echo   "<tr>"
 	    case $state in
@@ -216,5 +228,6 @@ echo "<form method='post' action='$luw'>"
   echo "</table>"
 echo "</form>"
 
-rm -f $lslxc
-rm -f $catcom
+#rm -f /tmp/lista$REMOTE_USER.txt
+rm -f $lista
+rm -f $lcomandos
