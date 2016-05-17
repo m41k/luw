@@ -176,6 +176,7 @@ function botao()
 #--------------------------------------------------------------------------------#
 #-------> Inicio da tabela dos caontaines
 #-------> html misurado com shell - vitamina old school
+if [ -s $lslxc ]; then
 echo "<form method='post' action='$luw'>"
  echo  "<table border=1>"
 	echo   "<tr>"
@@ -215,6 +216,9 @@ echo "<form method='post' action='$luw'>"
    done
   echo "</table>"
 echo "</form>"
+else
+ echo "Nenhum container criado"
+fi
 
 rm -f $lslxc
 rm -f $catcom
