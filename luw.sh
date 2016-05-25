@@ -110,6 +110,7 @@ fi 2> /dev/null
 #--------------------------------------------------------------------------------#
 #			BOTAO CRIAR CONTAINER - EXECUCAO			 #
 #--------------------------------------------------------------------------------#
+#      add validation to remote code execution solution - Stéphane reported      #
 #==================================LXC-CREATE====================================#
 if [ $FORM_ncont != "" ]; then
  if  echo $FORM_ncont | grep '[^[:alnum:]]' > /dev/null; then
