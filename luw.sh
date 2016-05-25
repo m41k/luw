@@ -112,6 +112,9 @@ fi 2> /dev/null
 #--------------------------------------------------------------------------------#
 #==================================LXC-CREATE====================================#
 if [ $FORM_ncont != "" ]; then
+ if  echo $FORM_ncont | grep '[^[:alnum:]]' > /dev/null; then
+  echo "<font color=red size=2><b>Invalid name. Use alphanumeric characters only.</b></font>"
+ else
 	contname=$FORM_ncont
 	distro=`echo $FORM_dcont | awk -F_ {'print $1'}`
 	release=`echo $FORM_dcont | awk -F_ {'print $2'}`
@@ -119,6 +122,7 @@ if [ $FORM_ncont != "" ]; then
 	echo "<pre>"
 	eval $ssh lxc-create -t download -n $contname -- -d $distro -r $release -a $arquit 2> /dev/null
 	echo "</pre>"
+ fi
 fi 2> /dev/null
 
 #--------------------------------------------------------------------------------#
