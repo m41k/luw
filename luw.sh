@@ -283,7 +283,8 @@ if [ $FORM_pass != "" ]; then
           eval $ssh lxc-start -n $FORM_orig 2> /dev/null 
           eval $ssh lxc-attach -n $FORM_orig -- useradd -m $FORM_user -s /bin/bash
           eval $ssh lxc-attach -n $FORM_orig -- usermod -p $(openssl passwd $FORM_pass) $FORM_user
-        echo "Password changed. <a href=http://$SERVER_NAME/~$REMOTE_USER/cgi-bin/$FORM_orig.sh>Have Fun!</a>"
+        echo Password changed. 
+        #echo "<a href=http://$SERVER_NAME/~$REMOTE_USER/cgi-bin/$FORM_orig.sh>Have Fun!</a>"
         echo "</pre>"
 
 lslxc=~/.contdo$REMOTE_USER.lxc
