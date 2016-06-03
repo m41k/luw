@@ -58,18 +58,18 @@ pidc=`cat $cpid`; kill -9 $pidc
 
 function Fst()
 {
-(
+
 #./luw.sh -teste
-echo "#!/bin/bash" > $container.sh
-echo shellinaboxd --no-beep --cgi -t -s '"'/:$(id -u):$(id -g):HOME:/bin/bash /home/ubuntu/public_html/cgi-bin/$container.box'"' >> $container.sh
-echo lxc-console -q -n $container > $container.box
-chmod 705 $container.sh
-chmod +x $container.sh
+echo "#!/bin/bash" > ~/public_html/cgi-bin/$container.sh
+echo shellinaboxd --no-beep --cgi -t -s '"'/:$(id -u):$(id -g):HOME:/bin/bash /home/$REMOTE_USER/public_html/cgi-bin/$container.box'"' >> ~/public_html/cgi-bin/$container.sh
+echo lxc-console -q -n $container > ~/public_html/cgi-bin/$container.box
+chmod 705 ~/public_html/cgi-bin/$container.sh
+chmod +x ~/public_html/cgi-bin/$container.sh
 goshell='<meta http-equiv="refresh" content="0;url=http://'$SERVER_NAME'/~'$REMOTE_USER'/cgi-bin/'$container.sh'">'
 echo $goshell
 
 #echo teste
-)
+
 #echo $0
 #shellinaboxd --no-beep --cgi -t -s "/:$(id -u):$(id -g):HOME:/bin/bash /home/ubuntu/public_html/cgi-bin/apoio"
 }
