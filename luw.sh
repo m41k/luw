@@ -9,6 +9,31 @@ eval `/opt/luw/proccgi $*`
 echo -e "Content-type: text/html\n\n"
 
 #--------------------------------------------------------------------------------#
+#			    	 CABECALHO-CSS					 #
+#--------------------------------------------------------------------------------#
+cat <<EOF
+<html>
+   <head>
+     <title>LUW - IaaS Project </title>
+      <style type="text/css">
+	table{
+		 border-collapse: collapse;
+	}
+	input,
+	select,
+	button{
+		 color: #6496c8;
+		 border: solid 1px silver;
+		 border-radius: 5px;
+		 margin: 2px;
+	}
+       </style>
+   </head>
+ <body>
+EOF
+
+
+#--------------------------------------------------------------------------------#
 #			     VARIAVEIS INICIAIS					 #
 #--------------------------------------------------------------------------------#
 #-->Hostname
@@ -97,6 +122,7 @@ if [ $FORM_botao != "" ]; then
 	container=`echo $FORM_botao | awk -F: {'print $2'}`
 	var2=`echo $comand $container`
 	eval $var2
+	echo "</pre>"
 fi 2> /dev/null
 
 #--------------------------------------------------------------------------------#
@@ -110,13 +136,14 @@ eval $ssh lxc-ls -f > $lslxc 2> /dev/null
 #			HTML - BOTOES CABECALHO	- CRIACAO			 #
 #--------------------------------------------------------------------------------#
 echo "<form method='post' action='$luw'>"
-btop_home="<input type='submit' name='top'  value='Home'>"
-btop_chek="<input type='submit' name='top'  value='Check Config'>"
+btop_home="<input type='submit' name='top' value='Home'>"
+btop_chek="<input type='submit' name='top' value='Check Config'>"
 btop_ncon="<input type='submit' name='top' value='New Container'>"
 btop_clon="<input type='submit' name='top' value='Clone'>"
 btop_atta="<input type='submit' name='top' value='Attach'>"
 echo $btop_home $btop_chek $btop_ncon $btop_clon $btop_atta
-#echo "<input type='submit' name='top'  value='Home'>" "<input type='submit' name='top'  value='Check Config'>" "<input type='submit' name='top' value='New Container'>" "<input type='submit' name='top' value='Clone'>"
+echo "<hr>"
+#echo "<input type='submit' name='top' value='Home'>" "<input type='submit' name='top'  value='Check Config'>" "<input type='submit' name='top' value='New Container'>" "<input type='submit' name='top' value='Clone'>"
 echo "</form>"
 
 
@@ -284,14 +311,15 @@ if [ $FORM_pass != "" ]; then
           eval $ssh lxc-attach -n $FORM_orig -- useradd -m $FORM_user -s /bin/bash
           eval $ssh lxc-attach -n $FORM_orig -- usermod -p $(openssl passwd $FORM_pass) $FORM_user
         echo Password changed. 
-        #echo "<a href=http://$SERVER_NAME/~$REMOTE_USER/cgi-bin/$FORM_orig.sh>Have Fun!</a>"
+        #echo <a href=http://$SERVER_NAME/~$REMOTE_USER/cgi-bin/$FORM_orig.sh>Have Fun!</a>"
         echo "</pre>"
-
-lslxc=~/.contdo$REMOTE_USER.lxc
-eval $ssh lxc-ls -f > $lslxc 2> /dev/null
 
 fi 2> /dev/null
 
+#-->Novo local verificar
+
+lslxc=~/.contdo$REMOTE_USER.lxc
+eval $ssh lxc-ls -f > $lslxc 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #			    VARIAVES AUXILIARES SHELL				 #
@@ -338,10 +366,10 @@ if [ -s $lslxc ]; then
 echo "<form method='post' action='$luw'>"
  echo  "<table border=1>"
 	echo   "<tr>"
-	echo    "<td><pre>"
+	echo    "<td bgcolor=F5F5F5><pre>"
 		    head -n$lc $lslxc
 	echo 	"</pre></td>"
-	echo    "<td><center>$REMOTE_USER</center></td>"
+	echo    "<td bgcolor=F5F5F5><center><i>$REMOTE_USER</i></center></font></td>"
 	echo    "</tr>"
 		     until [ $lc = $n ];
   do
@@ -351,13 +379,15 @@ echo "<form method='post' action='$luw'>"
  	echo   "<tr>"
 	    case $state in
 	         STOPPED)
-	echo	  "<td bgcolor=red><pre>"
+#	echo	  "<td bgcolor=F78B8B><pre>"
+	echo	  "<td bgcolor=FAEBD7><pre>"
         	 ;;
         	 RUNNING)
-	echo	  "<td bgcolor=green><pre>"
+	echo	  "<td bgcolor=90EE90><pre>"
+#	echo	  "<td bgcolor=9ACD32><pre>"
     		 ;;
     		 FROZEN)
-	echo 	  "<td bgcolor=blue><pre>"
+	echo 	  "<td bgcolor=778899><pre>"
 		 ;;
 		 *)
 	echo 	 "<td><pre>"
@@ -380,3 +410,6 @@ fi
 
 rm -f $lslxc
 rm -f $catcom
+
+echo  "<body>"
+echo "</html>"
