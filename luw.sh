@@ -17,21 +17,20 @@ cat <<EOF
   <title>LUW - IaaS Project </title>
    <style type="text/css">
 	table{
-	 border-collapse: collapse;
+		  border-collapse: collapse;
 	}
-	 input,
-	 select,
-	 button{
-	 color: #6496c8;
-	 order: solid 1px silver;
-	 border-radius: 5px;
-	 margin: 2px;
+	input,
+	select,
+	button{
+		 color: #6496c8;
+		 border: solid 1px silver;
+		 border-radius: 5px;
+		 margin: 2px;
 	}
    </style>
  </head>
  <body>
 EOF
-
 
 #--------------------------------------------------------------------------------#
 #			     VARIAVEIS INICIAIS					 #
@@ -379,8 +378,8 @@ echo "<form method='post' action='$luw'>"
  	echo   "<tr>"
 	    case $state in
 	         STOPPED)
-#	echo	  "<td bgcolor=F78B8B><pre>"
-	echo	  "<td bgcolor=FAEBD7><pre>"
+	echo	  "<td bgcolor=F78B8B><pre>"
+#	echo	  "<td bgcolor=FAEBD7><pre>"
         	 ;;
         	 RUNNING)
 	echo	  "<td bgcolor=90EE90><pre>"
