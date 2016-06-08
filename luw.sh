@@ -9,7 +9,7 @@ eval `/opt/luw/proccgi $*`
 echo -e "Content-type: text/html\n\n"
 
 #--------------------------------------------------------------------------------#
-#			    	 CABECALHO-CSS					 #
+#			    	 HTML CSS STYLE					 #
 #--------------------------------------------------------------------------------#
 cat <<EOF
 <html>
@@ -18,7 +18,7 @@ cat <<EOF
    <style type="text/css">
 	table{
 		  border-collapse: collapse;
-	}
+             }
 	input,
 	select,
 	button{
@@ -26,7 +26,7 @@ cat <<EOF
 		 border: solid 1px silver;
 		 border-radius: 5px;
 		 margin: 2px;
-	}
+	      }
    </style>
  </head>
  <body>
@@ -55,7 +55,7 @@ if [ $puser != $REMOTE_USER ];
 fi 2> /dev/null
 
 #--------------------------------------------------------------------------------#
-#  			        BUILD CONSOLE			                 #
+#  		   FUNCOES CONSOLE - SHELLINBOX - Fst enabled              	 #
 #--------------------------------------------------------------------------------#
 function Fss()
 {
@@ -66,12 +66,8 @@ netcat -z 127.0.0.1 $port
 if [ $? = 0 ]; then
  Fss
 else
-# shellinaboxd --no-beep -p $port -t -b$cpid -s "/:AUTH:HOME:lxc-attach -n $container"
   shellinaboxd --no-beep -p $port -t -b$cpid -s "/:AUTH:HOME:/bin/bash /home/ubuntu/public_html/cgi-bin/apoio"
 fi
-
-
-#echo "shellinaboxd --no-beep -p $port -t -bteste.pid -s '/:AUTH:HOME:lxc-attach -n $container'"
 }
 
 function Fsp()
@@ -83,7 +79,6 @@ pidc=`cat $cpid`; kill -9 $pidc
 function Fst()
 {
 
-#./luw.sh -teste
 echo "#!/bin/bash" > ~/public_html/cgi-bin/$container.sh
 echo shellinaboxd --no-beep --cgi -t -s '"'/:$(id -u):$(id -g):HOME:/bin/bash /home/$REMOTE_USER/public_html/cgi-bin/$container.box'"' >> ~/public_html/cgi-bin/$container.sh
 echo lxc-console -q -n $container > ~/public_html/cgi-bin/$container.box
@@ -92,10 +87,6 @@ chmod +x ~/public_html/cgi-bin/$container.sh
 goshell='<meta http-equiv="refresh" content="0;url=http://'$SERVER_NAME'/~'$REMOTE_USER'/cgi-bin/'$container.sh'">'
 echo $goshell
 
-#echo teste
-
-#echo $0
-#shellinaboxd --no-beep --cgi -t -s "/:$(id -u):$(id -g):HOME:/bin/bash /home/ubuntu/public_html/cgi-bin/apoio"
 }
 
 #--------------------------------------------------------------------------------#
@@ -142,9 +133,7 @@ btop_clon="<input type='submit' name='top' value='Clone'>"
 btop_atta="<input type='submit' name='top' value='Attach Passwd'>"
 echo "$btop_home $btop_chek $btop_ncon $btop_clon $btop_atta"
 echo "<hr>"
-#echo "<input type='submit' name='top' value='Home'>" "<input type='submit' name='top'  value='Check Config'>" "<input type='submit' name='top' value='New Container'>" "<input type='submit' name='top' value='Clone'>"
 echo "</form>"
-
 
 #--------------------------------------------------------------------------------#
 #			BOTOES CABECALHO - EXECUCAO				 #
@@ -157,9 +146,6 @@ fi 2> /dev/null
 
 #============================[BOTAO CHECKCONFIG]=================================#
 if [ $FORM_top = "Check Config" ]; then 
-#	echo "<form method='post' action='$luw'>"
-#	echo "<input type='submit' name='top'  value='Home'>" 
-#	echo "</form>"
 	echo "<pre>"
 	echo "<h2>LXC-CHECKCONFIG</h1>"
 	lxc-checkconfig | sed 's/\[0;39m/ / ; s/\[1;32m/ /'
@@ -201,8 +187,8 @@ if [ $FORM_top = "New Container" ]; then
 fi 2> /dev/null
 
 #=================================[BOTAO CLONE]==================================#
-if [ $FORM_top = "Clone" ]; then 
-#------->Criar array do containers existentes para o select 
+if [ $FORM_top = "Clone" ]; then
+#------->Criar array do containers existentes para o select
 	wc_lslxc=`wc $lslxc | awk {'print $1'}`
 	tt_cont=`expr $wc_lslxc - 1`
 	orig=( `cat $lslxc | awk {'print $1'} | tail -$tt_cont` )
@@ -217,12 +203,10 @@ if [ $FORM_top = "Clone" ]; then
  	   echo "<option value=$orig[$d]>$orig[$d]"
          done
 	echo  "</select>"
-	   echo ">>>"
-	   echo "<input type='text' name='clone' maxlength='50' size='30'>"
-  	   echo  "<input type='submit' value='Clonar'>"
+	echo ">>>"
+	echo "<input type='text' name='clone' maxlength='50' size='30'>"
+  	echo  "<input type='submit' value='Clonar'>"
 	echo  "</form>"
-
-#	echo "</pre>"
 fi 2> /dev/null
 
 #=================================[BOTAO ATTACH]==================================#
@@ -235,19 +219,14 @@ if [ $FORM_top = "Attach Passwd" ]; then
 #------->Form para criacao de container
 
         echo "<form method='post' action='$luw'>"
-#        echo "<h2>Attach Command</h2>"
         echo "<h2>Define password:</h2>"
-#        echo "root@"
-         echo "Container:"
+        echo "Container:"
         echo "<select name='orig'>"
          for (( d=1; d<=${#orig[@]}; d++ ))
           do
            echo "<option value=$orig[$d]>$orig[$d]"
          done
         echo  "</select>"
-#          echo ":/#"
-#           echo "<input type='text' name='attach' maxlength='50' size='30'>"
-#           echo  "<input type='submit' value='Execute'>"
 	echo "User:"
         echo "<select name='user'>"
 	echo "<option value='luw'>luw</option>"
@@ -256,14 +235,7 @@ if [ $FORM_top = "Attach Passwd" ]; then
 	echo "Password:"
         echo "<input type='password' name='pass' maxlength='50' size='30'>"
         echo  "<input type='submit' value='Execute'>"
-
-#	   echo "<br>"
-#           echo "<input type='text' name='aroot' maxlength='50' size='30'>"
-#           echo  "<input type='submit' value='Execute'>"
-
         echo  "</form>"
-
-#       echo "</pre>"
 fi 2> /dev/null
 
 #--------------------------------------------------------------------------------#
@@ -294,8 +266,7 @@ if [ $FORM_clone != "" ]; then
   echo "<font color=red size=2><b>Invalid name. Use alphanumeric characters only.</b></font>"
  else
         echo "<pre>"
-#        eval $ssh lxc-create -t download -n $contname -- -d $distro -r $release -a $arquit 2> /dev/null
-	 eval $ssh  lxc-clone -o $FORM_orig -n $FORM_clone 2> /dev/null 
+	 eval $ssh  lxc-clone -o $FORM_orig -n $FORM_clone 2> /dev/null
         echo "</pre>"
  fi
 fi 2> /dev/null
@@ -306,7 +277,7 @@ fi 2> /dev/null
 #==================================LXC-ATTACH====================================#
 if [ $FORM_pass != "" ]; then
         echo "<pre>"
-          eval $ssh lxc-start -n $FORM_orig 2> /dev/null 
+          eval $ssh lxc-start -n $FORM_orig 2> /dev/null
           eval $ssh lxc-attach -n $FORM_orig -- useradd -m $FORM_user -s /bin/bash
           eval $ssh lxc-attach -n $FORM_orig -- usermod -p $(openssl passwd $FORM_pass) $FORM_user
         echo Password changed. 
@@ -315,7 +286,9 @@ if [ $FORM_pass != "" ]; then
 
 fi 2> /dev/null
 
-#-->Novo local verificar
+#--------------------------------------------------------------------------------#
+#   	    RECRIANDO LISTA DE CONTAINERS EXISTENTES - DUPLICATE	         #
+#--------------------------------------------------------------------------------#
 
 lslxc=~/.contdo$REMOTE_USER.lxc
 eval $ssh lxc-ls -f > $lslxc 2> /dev/null
@@ -379,11 +352,9 @@ echo "<form method='post' action='$luw'>"
 	    case $state in
 	         STOPPED)
 	echo	  "<td bgcolor=F78B8B><pre>"
-#	echo	  "<td bgcolor=FAEBD7><pre>"
         	 ;;
         	 RUNNING)
 	echo	  "<td bgcolor=90EE90><pre>"
-#	echo	  "<td bgcolor=9ACD32><pre>"
     		 ;;
     		 FROZEN)
 	echo 	  "<td bgcolor=778899><pre>"
