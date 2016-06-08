@@ -22,7 +22,7 @@ cat <<EOF
 	input,
 	select,
 	button{
-		 color: #6496c8;
+		 color: black;
 		 border: solid 1px silver;
 		 border-radius: 5px;
 		 margin: 2px;
@@ -139,8 +139,8 @@ btop_home="<input type='submit' name='top' value='Home'>"
 btop_chek="<input type='submit' name='top' value='Check Config'>"
 btop_ncon="<input type='submit' name='top' value='New Container'>"
 btop_clon="<input type='submit' name='top' value='Clone'>"
-btop_atta="<input type='submit' name='top' value='Attach'>"
-echo $btop_home $btop_chek $btop_ncon $btop_clon $btop_atta
+btop_atta="<input type='submit' name='top' value='Attach Passwd'>"
+echo "$btop_home $btop_chek $btop_ncon $btop_clon $btop_atta"
 echo "<hr>"
 #echo "<input type='submit' name='top' value='Home'>" "<input type='submit' name='top'  value='Check Config'>" "<input type='submit' name='top' value='New Container'>" "<input type='submit' name='top' value='Clone'>"
 echo "</form>"
@@ -226,7 +226,7 @@ if [ $FORM_top = "Clone" ]; then
 fi 2> /dev/null
 
 #=================================[BOTAO ATTACH]==================================#
-if [ $FORM_top = "Attach" ]; then
+if [ $FORM_top = "Attach Passwd" ]; then
 #------->Criar array do containers existentes para o select
         wc_lslxc=`wc $lslxc | awk {'print $1'}`
         tt_cont=`expr $wc_lslxc - 1`
@@ -368,7 +368,7 @@ echo "<form method='post' action='$luw'>"
 	echo    "<td bgcolor=F5F5F5><pre>"
 		    head -n$lc $lslxc
 	echo 	"</pre></td>"
-	echo    "<td bgcolor=F5F5F5><center><i>$REMOTE_USER</i></center></font></td>"
+	echo    "<td bgcolor=silver><center><i>$REMOTE_USER</i></center></font></td>"
 	echo    "</tr>"
 		     until [ $lc = $n ];
   do
