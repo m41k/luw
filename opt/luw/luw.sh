@@ -108,7 +108,8 @@ eval $ssh echo "7:console:Fst" >> $catcom 2> /dev/null
 if [ $FORM_botao != "" ]; then
 	ivn=`echo $FORM_botao | awk -F: {'print $1'}` 
 	echo "<pre>"
-	comand=`cat -n $catcom | grep $ivn | awk -F: {'print $3'}`
+#	comand=`cat -n $catcom | grep $ivn | awk -F: {'print $3'}`
+	comand=`sed -n $ivn'p' $catcom | awk -F: {'print $3'}`
 	container=`echo $FORM_botao | awk -F: {'print $2'}`
 	var2=`echo $comand $container`
 	eval $var2
