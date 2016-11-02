@@ -62,5 +62,5 @@ echo "</pre></td></tr>"
 #               		   RELOAD                              		 #
 #--------------------------------------------------------------------------------#
 echo "<meta http-equiv='refresh' content='0';>"
-</table>
+#</table> Remove - erro no log
 
