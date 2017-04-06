@@ -56,7 +56,7 @@
  #Preparando cgi-bin
 
   cd /usr/lib/cgi-bin
-  wget  https://raw.githubusercontent.com/m41k/luw/master/usr/lib/cgi-bin/luw-enter/luw-enter.sh
+  wget https://raw.githubusercontent.com/m41k/luw/master/usr/lib/cgi-bin/luw-mdc.sh
   wget https://raw.githubusercontent.com/m41k/luw/master/usr/lib/cgi-bin/luw-ini.sh
   wget https://raw.githubusercontent.com/m41k/luw/master/usr/lib/cgi-bin/luw-tuser.sh 
   chmod +x *
