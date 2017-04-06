@@ -47,8 +47,11 @@
    cd /var/www/html/
    mv index.html index.bkp
    wget https://raw.githubusercontent.com/m41k/luw/master/var/www/html/capa.png
-   wget https://raw.githubusercontent.com/m41k/luw/master/var/www/html/capa.png
    wget https://raw.githubusercontent.com/m41k/luw/master/var/www/html/index.html
+   wget https://github.com/m41k/luw/raw/master/var/www/html/man.tar
+   tar -xf man.tar
+   rm -f man.tar
+   
 
  #Preparando cgi-bin
 
@@ -71,7 +74,16 @@
    wget https://github.com/m41k/luw/raw/master/opt/luw/proccgi
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/luw.sh
    chmod +x *
-
+   
+  #Preparando /opt/luw/tools
+   mkdir /opt/luw/tools
+   cd /opt/luw/tools
+   wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-homall.sh
+   wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-monitor.sh
+   wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-user.sh
+   chmod +x *
+   cd
+ 
  #Editando /etc/sudoers
    echo "www-data ALL=NOPASSWD:/usr/lib/cgi-bin/luw-tuser.sh" >> /etc/sudoers
    
