@@ -75,6 +75,15 @@
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/luw.sh
    chmod +x *
    
+  #Preparando /opt/luw/homesh
+   mkdir /opt/luw/homesh
+   
+  #Preparando /opt/luw/log
+   mkdir /opt/luw/log/
+   touch /opt/luw/log/creation 
+   touch /opt/luw/log/acesso
+   chown www-data:www-data /opt/luw/log/acesso
+   
   #Preparando /opt/luw/tools
    mkdir /opt/luw/tools
    cd /opt/luw/tools
@@ -82,9 +91,8 @@
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-monitor.sh
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-user.sh
    chmod +x *
-   cd
  
- #Editando /etc/sudoers
+  #Editando /etc/sudoers
    echo "www-data ALL=NOPASSWD:/usr/lib/cgi-bin/luw-tuser.sh" >> /etc/sudoers
    
 
