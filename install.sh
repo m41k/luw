@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #--------------------------------------------------------------------------------#
-#		                     PROJETO LUW - LXC Unprivileged Web				                   #
-#       		             CREATED BY: maik.alberto@hotmail.com 		                   #
+#		PROJETO LUW - LXC Unprivileged Web				 #
+# 		CREATED BY: maik.alberto@hotmail.com				 #
 #--------------------------------------------------------------------------------#
 
 #Install - Ubuntu 16.04  
