@@ -64,14 +64,14 @@ echo "<hr>"
 echo "</form>"
 
 #===============================[BOTAO INICIAL]=====================================#
-if [ $FORM_top -z ]; then
-	echo "<b>Monitor</b><br>Monitoramente de recursos do sistema<br><br>"
-	echo "<b>Check Config</b><br>Verificação da configuração do LXC<br><br>"
-	echo "<b>Users</b><br>Administração de usuários<br><br>"
-	echo "<b>Limits</b><br>Limitar recursos dos containers<br><br>"
-	echo "<b>Console</b><br>Console do sistema<br><br>"
-	echo "<b>Logout</b><br>Sair<br><br>"
-fi 2> /dev/null
+#if [ $FORM_top -z ]; then
+#	echo "<b>Monitor</b><br>Monitoramente de recursos do sistema<br><br>"
+#	echo "<b>Check Config</b><br>Verificação da configuração do LXC<br><br>"
+#	echo "<b>Users</b><br>Administração de usuários<br><br>"
+#	echo "<b>Limits</b><br>Limitar recursos dos containers<br><br>"
+#	echo "<b>Console</b><br>Console do sistema<br><br>"
+#	echo "<b>Logout</b><br>Sair<br><br>"
+#fi 2> /dev/null
 
 #===============================[BOTAO HOME]=====================================#
 if [ $FORM_top = "Monitor" ]; then
@@ -87,14 +87,16 @@ fi 2> /dev/null
 #===============================[BOTAO USERS]====================================#
 if [ $FORM_top = "Users" ]; then
 #-Criar->
+        echo "<form method='post' action='$proc'>"
 	echo "Criar usuario<br>"
 	echo User:
-	echo "<input type='text' name='user' maxlength='50' size='30'>"
+	echo "<input type='text' name='cuser' maxlength='50' size='30'>"
         echo "<br>"
 	echo Pass:
-	echo "<input type='password' name='pass' maxlength='50' size='30'>"
+	echo "<input type='password' name='cpass' maxlength='50' size='30'>"
         echo "<br>"
 	echo "<input type='submit' name='add' value='Criar'>"
+	echo "</form>"
 #-Reset->
 	echo "<br><br>Reset Password<br>"
 	echo User:
@@ -130,6 +132,7 @@ if [ $FORM_top = "Logout" ]; then
 #echo "teste"
 #echo "<meta http-equiv='refresh' content='0';url='foo:foo@luw.servehttp.com'>"
 fi 2> /dev/null
+
 #============================[BOTAO CHECKCONFIG]=================================#
 if [ $FORM_top = "Check_Config" ]; then 
 	echo "<pre>"
@@ -139,24 +142,10 @@ if [ $FORM_top = "Check_Config" ]; then
 	exit 0
 fi 2> /dev/null
 
-#if [ $FORM_senha = "123" ]; then
-#else
-#echo $REMOTE_USER
-#echo "<table border='0' width='100%' height='100%'>"
-#echo "<tr height='10%'>"
-#echo "<td>"
-# cat <<FDA
-#  <form method='post' action='$proc'>
-#   	<input type='submit' name='enter' value='Passwd'>
-#   </form>
-#FDA
-#echo "</td>"
-#echo "</tr>"
-#echo "<table border='0' width='100%' height='100%'>"
-#echo "<tr>"
-#echo "<td>"
-#echo "<iframe src=luw-mdc.sh frameborder='0' width='100%' height='100%'></iframe>"
-#echo "</td>"
-#echo "</tr>"
-#echo "<table>"
-#fi
+
+#==Criacao usuario
+if [ $FORM_cuser != "" ] && [ $FORM_cpass != "" ]; then
+   echo "<pre>"
+    sudo /opt/luw/tools/luw-user.sh $FORM_cuser $FORM_cpass
+   echo "</pre>"
+fi
