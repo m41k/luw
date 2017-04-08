@@ -92,6 +92,18 @@
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-user.sh
    chmod +x *
  
+  #Ambiente ADM -Organizar-
+  
+   /opt/luw/tools/luw-user.sh luw-adm luw-adm
+   cd /home/luw-adm/public_html/cgi-bin
+   mv luw.sh luw2.sh
+   wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-adm.sh
+   https://raw.githubusercontent.com/m41k/luw/master/usr/lib/cgi-bin/luw-mdc.sh
+   mv luw-adm.sh 
+   chown luw-adm:luw-adm *.sh
+   chmod +x *.sh
+   echo luw-adm ALL=NOPASSWD:/opt/luw/tools/luw-user.sh >> /etc/sudoers
+  
   #Editando /etc/sudoers
    echo "www-data ALL=NOPASSWD:/usr/lib/cgi-bin/luw-tuser.sh" >> /etc/sudoers
    
