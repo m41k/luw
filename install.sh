@@ -99,7 +99,7 @@
    mv luw.sh luw2.sh
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-adm.sh
    https://raw.githubusercontent.com/m41k/luw/master/usr/lib/cgi-bin/luw-mdc.sh
-   mv luw-adm.sh 
+   mv luw-adm.sh luw.sh 
    chown luw-adm:luw-adm *.sh
    chmod +x *.sh
    echo luw-adm ALL=NOPASSWD:/opt/luw/tools/luw-user.sh >> /etc/sudoers
