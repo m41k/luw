@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 #--------------------------------------------------------------------------------#
 #	LUW-USER - Create and configure unprivileged user to LXC/LUW 		 #
 # 		CREATED BY: maik.alberto@hotmail.com				 #
@@ -10,7 +10,7 @@ if [ -z $1 ]; then
   nuser=$1
 fi
 
-useradd -m $nuser
+/usr/sbin/useradd -m $nuser
 
 if [ $? -ne 0 ]; then
  echo "Error"
@@ -33,7 +33,13 @@ chown $nuser:$nuser /home/$nuser/.config/lxc/default.conf
 
 echo $nuser veth lxcbr0 10 >> /etc/lxc/lxc-usernet
 
-passwd $nuser
+if [ -z $2 ]; then
+  passwd $nuser
+ else
+  usermod -p $(openssl passwd $2) $nuser
+fi
+
+#passwd $nuser
 
 #--------------------------------------------------------------------------------#
 #       		Configurando ambiente LUW para usuario	                 #
