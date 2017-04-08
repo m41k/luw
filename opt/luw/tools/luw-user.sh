@@ -3,11 +3,17 @@
 #	LUW-USER - Create and configure unprivileged user to LXC/LUW 		 #
 # 		CREATED BY: maik.alberto@hotmail.com				 #
 #--------------------------------------------------------------------------------#
-if [ -z $1 ]; then
+
+case $1 in
+
+#=======>Add User
+        -a)
+
+if [ -z $2 ]; then
   printf "New user: "
   read nuser
  else
-  nuser=$1
+  nuser=$2
 fi
 
 /usr/sbin/useradd -m $nuser
@@ -33,10 +39,10 @@ chown $nuser:$nuser /home/$nuser/.config/lxc/default.conf
 
 echo $nuser veth lxcbr0 10 >> /etc/lxc/lxc-usernet
 
-if [ -z $2 ]; then
+if [ -z $3 ]; then
   passwd $nuser
  else
-  usermod -p $(openssl passwd $2) $nuser
+  usermod -p $(openssl passwd $3) $nuser
 fi
 
 #passwd $nuser
@@ -61,3 +67,11 @@ chown $nuser:$nuser /home/$nuser/public_html/cgi-bin/luw.sh
 su $nuser -c "ssh-keygen -t rsa -f /home/$nuser/.ssh/id_rsa -N ''; cat /home/$nuser/.ssh/id_rsa.pub >> /home/$nuser/.ssh/authorized_keys"
 
 fi
+
+        ;;
+#=======>Reset senha
+        -m)
+ 	   usermod -p $(openssl passwd $3) $2
+#	   usermod -p $(openssl passwd $3) $nuser
+        ;;
+esac
