@@ -94,7 +94,7 @@
  
   #Ambiente ADM -Organizar-
   
-   /opt/luw/tools/luw-user.sh luw-adm luw-adm
+   /opt/luw/tools/luw-user.sh -a luw-adm luw-adm
    cd /home/luw-adm/public_html/cgi-bin
    mv luw.sh luw2.sh
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-adm.sh
