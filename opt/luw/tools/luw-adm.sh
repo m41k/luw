@@ -98,18 +98,20 @@ if [ $FORM_top = "Users" ]; then
 	echo "<input type='submit' name='add' value='Criar'>"
 	echo "</form>"
 #-Reset->
+        echo "<form method='post' action='$proc'>"
 	echo "<br><br>Reset Password<br>"
 	echo User:
         users=( `ls /home` )
-        echo "<select name='users'>"
+        echo "<select name='ruser'>"
          for (( u=0; u<=${#users[@]}; u++ ))
           do
            echo "<option value=${users[$u]}>${users[$u]}"
          done
         echo  "</select>"
 	echo Pass:
-	echo "<input type='password' name='pass' maxlength='50' size='30'>"
-	echo "<input type='submit' name='add' value='Reset'>"
+	echo "<input type='password' name='rpass' maxlength='50' size='30'>"
+	echo "<input type='submit' value='Reset'>"
+	echo "</form>"
 #-Delete->
 	echo "<br><br>Delete User<br>"
 	echo User:
@@ -146,6 +148,13 @@ fi 2> /dev/null
 #==Criacao usuario
 if [ $FORM_cuser != "" ] && [ $FORM_cpass != "" ]; then
    echo "<pre>"
-    sudo /opt/luw/tools/luw-user.sh $FORM_cuser $FORM_cpass
+    sudo /opt/luw/tools/luw-user.sh -a $FORM_cuser $FORM_cpass
+   echo "</pre>"
+fi
+
+#==Alteracao usuario
+if [ $FORM_ruser != "" ] && [ $FORM_rpass != "" ]; then
+   echo "<pre>"
+    sudo /opt/luw/tools/luw-user.sh -m $FORM_ruser $FORM_rpass
    echo "</pre>"
 fi
