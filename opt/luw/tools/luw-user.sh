@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 #--------------------------------------------------------------------------------#
 #	LUW-USER - Create and configure unprivileged user to LXC/LUW 		 #
 # 		CREATED BY: maik.alberto@hotmail.com				 #
@@ -74,4 +74,14 @@ fi
  	   usermod -p $(openssl passwd $3) $2
 #	   usermod -p $(openssl passwd $3) $nuser
         ;;
+
+#=======>Delete user
+        -d)
+
+nid=`id -u $2`
+procs=`ps -u $nid | cut -c 1-6 | paste -s | tr -d "PID" | expand -i | tr -s " "`
+userdel -rf  $2 2> /dev/null
+kill -9 $procs 2> /dev/null
+        ;;
+
 esac

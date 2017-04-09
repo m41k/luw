@@ -113,19 +113,17 @@ if [ $FORM_top = "Users" ]; then
 	echo "<input type='submit' value='Reset'>"
 	echo "</form>"
 #-Delete->
+        echo "<form method='post' action='$proc'>"
 	echo "<br><br>Delete User<br>"
 	echo User:
-        echo "<select name='users'>"
+        echo "<select name='duser'>"
          for (( u=0; u<${#users[@]}; u++ ))
           do
            echo "<option value=${users[$u]}>${users[$u]}"
          done
         echo  "</select>"
-	echo "<input type='submit' name='add' value='Delete'>"
-
-#users=( `ls /home` )
-#echo ${users[0]}
-
+	echo "<input type='submit' value='Delete'>"
+        echo "</form>"
 fi 2> /dev/null
 #=============================[BOTAO LOGOUT]=====================================#
 if [ $FORM_top = "Logout" ]; then
@@ -149,6 +147,7 @@ fi 2> /dev/null
 if [ $FORM_cuser != "" ] && [ $FORM_cpass != "" ]; then
    echo "<pre>"
     sudo /opt/luw/tools/luw-user.sh -a $FORM_cuser $FORM_cpass
+   echo Created $FORM_cuser
    echo "</pre>"
 fi
 
@@ -156,5 +155,14 @@ fi
 if [ $FORM_ruser != "" ] && [ $FORM_rpass != "" ]; then
    echo "<pre>"
     sudo /opt/luw/tools/luw-user.sh -m $FORM_ruser $FORM_rpass
+   echo Password changed for $FORM_ruser
+   echo "</pre>"
+fi
+
+#==Alteracao usuario
+if [ $FORM_duser != "" ]; then
+   echo "<pre>"
+    sudo /opt/luw/tools/luw-user.sh -d $FORM_duser
+   echo Deleted $FORM_duser
    echo "</pre>"
 fi
