@@ -63,16 +63,6 @@ echo "$btop_home $btop_chek $btop_ncon $btop_clon $btop_atta $btop_exit"
 echo "<hr>"
 echo "</form>"
 
-#===============================[BOTAO INICIAL]=====================================#
-#if [ $FORM_top -z ]; then
-#	echo "<b>Monitor</b><br>Monitoramente de recursos do sistema<br><br>"
-#	echo "<b>Check Config</b><br>Verificação da configuração do LXC<br><br>"
-#	echo "<b>Users</b><br>Administração de usuários<br><br>"
-#	echo "<b>Limits</b><br>Limitar recursos dos containers<br><br>"
-#	echo "<b>Console</b><br>Console do sistema<br><br>"
-#	echo "<b>Logout</b><br>Sair<br><br>"
-#fi 2> /dev/null
-
 #===============================[BOTAO HOME]=====================================#
 if [ $FORM_top = "Monitor" ]; then
 #echo "teste"
@@ -82,39 +72,38 @@ if [ $FORM_top = "Monitor" ]; then
 	echo "<iframe src=luw-mdc.sh frameborder='0' width='100%' height='100%'></iframe>"
 	echo "</td>"
 	echo "</tr>"
-	echo "<table>"
+	echo "</table>"
 fi 2> /dev/null
 #===============================[BOTAO USERS]====================================#
 if [ $FORM_top = "Users" ]; then
 #-Criar->
+ echo "<pre>"
         echo "<form method='post' action='$proc'>"
 	echo "Criar usuario<br>"
 	echo User:
 	echo "<input type='text' name='cuser' maxlength='50' size='30'>"
-        echo "<br>"
 	echo Pass:
 	echo "<input type='password' name='cpass' maxlength='50' size='30'>"
-        echo "<br>"
-	echo "<input type='submit' name='add' value='Criar'>"
+	echo "<input type='submit' value='Criar'>"
 	echo "</form>"
 #-Reset->
         echo "<form method='post' action='$proc'>"
-	echo "<br><br>Reset Password<br>"
-	echo User:
+	echo "Reset Password<br>"
+	echo -n User:
         users=( `ls /home` )
-        echo "<select name='ruser'>"
-         for (( u=0; u<=${#users[@]}; u++ ))
+        echo -e "<select name='ruser'>"
+         for (( u=0; u<${#users[@]}; u++ ))
           do
            echo "<option value=${users[$u]}>${users[$u]}"
          done
         echo  "</select>"
-	echo Pass:
+	echo -n Pass:
 	echo "<input type='password' name='rpass' maxlength='50' size='30'>"
 	echo "<input type='submit' value='Reset'>"
 	echo "</form>"
 #-Delete->
         echo "<form method='post' action='$proc'>"
-	echo "<br><br>Delete User<br>"
+	echo "Delete User<br>"
 	echo User:
         echo "<select name='duser'>"
          for (( u=0; u<${#users[@]}; u++ ))
@@ -123,7 +112,9 @@ if [ $FORM_top = "Users" ]; then
          done
         echo  "</select>"
 	echo "<input type='submit' value='Delete'>"
-        echo "</form>"
+	echo "</form>"
+ echo "</pre>"
+        exit 0
 fi 2> /dev/null
 #=============================[BOTAO LOGOUT]=====================================#
 if [ $FORM_top = "Logout" ]; then
@@ -143,26 +134,42 @@ if [ $FORM_top = "Check_Config" ]; then
 fi 2> /dev/null
 
 
-#==Criacao usuario
+#--------------------------------------------------------------------------------#
+#                            FORM USERS - EXECUCAO                               #
+#--------------------------------------------------------------------------------#
+
+#==================================[CRIACAO]=====================================#
 if [ $FORM_cuser != "" ] && [ $FORM_cpass != "" ]; then
    echo "<pre>"
     sudo /opt/luw/tools/luw-user.sh -a $FORM_cuser $FORM_cpass
    echo Created $FORM_cuser
    echo "</pre>"
+   exit 0
 fi
-
-#==Alteracao usuario
+#=================================[ALTERACAO]=====================================#
 if [ $FORM_ruser != "" ] && [ $FORM_rpass != "" ]; then
    echo "<pre>"
     sudo /opt/luw/tools/luw-user.sh -m $FORM_ruser $FORM_rpass
    echo Password changed for $FORM_ruser
    echo "</pre>"
+   exit 0
 fi
 
-#==Alteracao usuario
+#==================================[EXCLUSAO]=====================================#
 if [ $FORM_duser != "" ]; then
    echo "<pre>"
     sudo /opt/luw/tools/luw-user.sh -d $FORM_duser
    echo Deleted $FORM_duser
    echo "</pre>"
+   exit 0
 fi
+
+#===============================[CAPA PAGE]========================================#
+#if [ $FORM_top -z ]; then
+	echo "<b>Monitor</b><br>Monitoramente de recursos do sistema<br><br>"
+	echo "<b>Check Config</b><br>Verificação da configuração do LXC<br><br>"
+	echo "<b>Users</b><br>Administração de usuários<br><br>"
+	echo "<b>Limits</b><br>Limitar recursos dos containers<br><br>"
+	echo "<b>Console</b><br>Console do sistema<br><br>"
+	echo "<b>Logout</b><br>Sair<br><br>"
+#fi 2> /dev/null
