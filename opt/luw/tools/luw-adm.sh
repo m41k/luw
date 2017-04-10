@@ -138,7 +138,7 @@ fi 2> /dev/null
 if [ $FORM_top = "LIP" ]; then
         echo "<pre>"
         echo "Opções para os containers. Em desenvolvimento."
-	echo "Fork para conhecimanto:"
+	echo "Fork para conhecimento:"
 	echo "<a href='http://$SERVER_NAME/lip'>http://$SERVER_NAME/lip</a>"
         exit 0
 fi 2> /dev/null
