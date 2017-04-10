@@ -56,14 +56,14 @@ echo "<form method='post' action='$proc'>"
 btop_home="<input type='submit' name='top' value='Monitor'>"
 btop_chek="<input type='submit' name='top' value='Check_Config'>"
 btop_ncon="<input type='submit' name='top' value='Users'>"
-btop_clon="<input type='submit' name='top' value='Limits'>"
+btop_clon="<input type='submit' name='top' value='LIP'>"
 btop_atta="<input type='submit' name='top' value='Console'>"
 btop_exit="<input type='submit' name='top' value='Logout'>"
 echo "$btop_home $btop_chek $btop_ncon $btop_clon $btop_atta $btop_exit"
 echo "<hr>"
 echo "</form>"
 
-#===============================[BOTAO HOME]=====================================#
+#===============================[BOTAO MONITOR]=====================================#
 if [ $FORM_top = "Monitor" ]; then
 #echo "teste"
 	echo "<table border='0' width='100%' height='100%'>"
@@ -73,6 +73,7 @@ if [ $FORM_top = "Monitor" ]; then
 	echo "</td>"
 	echo "</tr>"
 	echo "</table>"
+        exit 0
 fi 2> /dev/null
 #===============================[BOTAO USERS]====================================#
 if [ $FORM_top = "Users" ]; then
@@ -131,6 +132,21 @@ if [ $FORM_top = "Check_Config" ]; then
 	lxc-checkconfig | sed 's/\[0;39m/ / ; s/\[1;32m/ /'
 	echo "</pre>"
 	exit 0
+fi 2> /dev/null
+
+#===============================[BOTAO LIP]=====================================#
+if [ $FORM_top = "LIP" ]; then
+        echo "<pre>"
+        echo "Opções para os containers. Em desenvolvimento."
+	echo "Fork para conhecimanto:"
+	echo "<a href='http://$SERVER_NAME/lip'>http://$SERVER_NAME/lip</a>"
+        exit 0
+fi 2> /dev/null
+#===============================[BOTAO LIP]=====================================#
+if [ $FORM_top = "Console" ]; then
+        echo "<pre>"
+	echo "Desativado"
+        exit 0
 fi 2> /dev/null
 
 
