@@ -5,12 +5,14 @@
 #               CREATED BY: maik.alberto@hotmail.com                             #
 #--------------------------------------------------------------------------------#
 
-ARQPORT=portas.fw
+PATHFW=/opt/luw/fw
+ARQPORT=/opt/luw/fw/portas.fw
 
 case $1 in
 
 #->[c] = Criar lista de portas verificando portas em uso
    -c)
+        if [ ! -d "$PATHFW" ]; then  -zmkdir $PATHFW; fi
         #Definicao de rande de porta (mudar para var)
         PI=$2
         PF=$3
@@ -34,5 +36,3 @@ case $1 in
         #echo $LAS
         sed -i s/$LAS/$LAS$USER/g $ARQPORT 2> /dev/null
 ;;
-
-esac
