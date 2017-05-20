@@ -133,8 +133,9 @@ btop_chek="<input type='submit' name='top' value='Check Config'>"
 btop_ncon="<input type='submit' name='top' value='New Container'>"
 btop_clon="<input type='submit' name='top' value='Clone'>"
 btop_atta="<input type='submit' name='top' value='Attach Passwd'>"
+btop_port="<input type='submit' name='top' value='Port Forwarding'>"
 btop_exit="<input type='submit' name='top' value='Logout'>"
-echo "$btop_home $btop_chek $btop_ncon $btop_clon $btop_atta $btop_exit"
+echo "$btop_home $btop_chek $btop_ncon $btop_clon $btop_atta $btop_port $btop_exit"
 echo "<hr>"
 echo "</form>"
 
@@ -249,6 +250,43 @@ if [ $FORM_top = "Attach Passwd" ]; then
         echo  "<input type='submit' value='Execute'>"
         echo  "</form>"
 fi 2> /dev/null
+
+#=================================[BOTAO PORT]==================================#
+if [ $FORM_top = "Port Forwarding" ]; then
+#------->Criar array do containers existentes para o select
+        wc_lslxc=`wc $lslxc | awk {'print $1'}`
+        tt_cont=`expr $wc_lslxc - 1`
+        orig=( `cat $lslxc | awk {'print $1'} | tail -$tt_cont` )
+
+#------->Localizar portas
+        PORTUS=( `/opt/luw/tools/luw-fw.sh -s $REMOTE_USER` )
+
+#------->Form para criacao de container
+
+        echo "<form method='post' action='$luw'>"
+        echo "<h2>Port Forwarding</h2>"
+        echo "<select name='orig'>"
+         for (( d=1; d<=${#orig[@]}; d++ ))
+          do
+           echo "<option value=$orig[$d]>$orig[$d]"
+         done
+        echo  "</select>"
+        echo ":"
+        echo "<input type='text' name='pcont' maxlength='6' size='6'>"
+        echo "<>"
+	echo $SERVER_NAME
+        echo ":"
+        echo "<select name='portus'>"
+         for (( p=1; p<=${#PORTUS[@]}; p++ ))
+          do
+           echo "<option value=$PORTUS[$p]>$PORTUS[$p]"
+         done
+        echo  "</select>"
+
+        echo  "<input type='submit' value='add'>"
+        echo  "</form>"
+fi 2> /dev/null
+
 
 #--------------------------------------------------------------------------------#
 #			BOTAO CRIAR CONTAINER - EXECUCAO			 #
