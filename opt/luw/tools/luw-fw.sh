@@ -12,7 +12,7 @@ case $1 in
 
 #->[c] = Criar lista de portas verificando portas em uso
    -c)
-        if [ ! -d "$PATHFW" ]; then  -zmkdir $PATHFW; fi
+        if [ ! -d "$PATHFW" ]; then  mkdir $PATHFW; fi
         #Definicao de rande de porta (mudar para var)
         PI=$2
         PF=$3
