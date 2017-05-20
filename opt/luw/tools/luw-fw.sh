@@ -29,10 +29,19 @@ case $1 in
          fi
         done
 ;;
-#->[u] = Definir porta para usuario
+#->Definir porta para usuario
    -u)
-        USER=$2
         LAS=`grep ':$' $ARQPORT | head -1`
         #echo $LAS
-        sed -i s/$LAS/$LAS$USER/g $ARQPORT 2> /dev/null
+        sed -i s/$LAS/$LAS$2/g $ARQPORT 2> /dev/null
 ;;
+#->search port user
+   -s)
+        cat $ARQPORT | grep '\b'$2'\b' | cut -d ":" -f1
+;;
+#->tabela de portas
+   -t)
+        cat $ARQPORT
+;;
+
+esac
