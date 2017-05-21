@@ -256,7 +256,7 @@ if [ $FORM_top = "Port Forwarding" ]; then
 #------->Criar array do containers existentes para o select
         wc_lslxc=`wc $lslxc | awk {'print $1'}`
         tt_cont=`expr $wc_lslxc - 1`
-        orig=( `cat $lslxc | awk {'print $1'} | tail -$tt_cont` )
+        orig=( `cat $lslxc | awk {'print $5'} | tail -$tt_cont` )
 
 #------->Localizar portas
         PORTUS=( `/opt/luw/tools/luw-fw.sh -s $REMOTE_USER` )
@@ -324,6 +324,21 @@ if [ $FORM_clone != "" ]; then
         echo "</pre>"
  fi
 fi 2> /dev/null
+
+#--------------------------------------------------------------------------------#
+#                       BOTAO ADD PORT CONTAINER - EXECUCAO                      #
+#--------------------------------------------------------------------------------#
+#==================================LUW-FW========================================#
+if [ $FORM_pcont != "" ]; then
+ if  echo $FORM_pcont | grep '[^[:alnum:]]' > /dev/null; then
+  echo "<font color=red size=2><b>Invalid. Use numeric characters only.</b></font>"
+ else
+        echo "<pre>"
+	  eval $ssh sudo /opt/luw/tools/luw-fw.sh -i $FORM_portus $FORM_orig $FORM_pcont
+        echo "</pre>"
+ fi
+fi 2> /dev/null
+
 
 #--------------------------------------------------------------------------------#
 #                       BOTAO ATTACH COMMAND - EXECUCAO                          #
