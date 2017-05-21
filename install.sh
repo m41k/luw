@@ -91,6 +91,7 @@
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-homall.sh
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-monitor.sh
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-user.sh
+   wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-fw.sh
    chmod +x *
  
   #Ambiente ADM -Organizar-
@@ -107,6 +108,7 @@
   
   #Editando /etc/sudoers
    echo "www-data ALL=NOPASSWD:/usr/lib/cgi-bin/luw-tuser.sh" >> /etc/sudoers
+   echo "ALL ALL=NOPASSWD:/opt/luw/tools/luw-fw.sh" >> /etc/sudoers
    
 
  #Reiniciando Apache
