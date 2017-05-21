@@ -44,4 +44,9 @@ case $1 in
         cat $ARQPORT
 ;;
 
+#->inserir regra de portas
+   -i)
+      /sbin/iptables -t nat -A PREROUTING -p tcp --dport $2 -j DNAT --to $3:$4
+;;
+
 esac
