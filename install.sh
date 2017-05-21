@@ -26,6 +26,7 @@
  apt-get install zsh -y
  apt-get install lynx -y
  apt-get install shellinabox -y
+ apt-get install openssh-server -y
 
 
  #Habilitando Modulos
