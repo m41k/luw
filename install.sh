@@ -27,8 +27,8 @@
  apt-get install lynx -y
  apt-get install shellinabox -y
  apt-get install openssh-server -y
-
-
+ apt-get install psmisc -y
+ 
  #Habilitando Modulos
   a2enmod userdir cgi authnz_external suexec
 
