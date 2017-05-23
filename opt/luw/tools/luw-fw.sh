@@ -12,8 +12,9 @@ case $1 in
 
 #->[c] = Criar lista de portas verificando portas em uso
    -c)
+      #->Criando arquivos tabela de portas
         if [ ! -d "$PATHFW" ]; then  mkdir $PATHFW; fi
-        #Definicao de rande de porta (mudar para var)
+        #Definicao de range de porta (mudar para var)
         PI=$2
         PF=$3
 
@@ -28,6 +29,10 @@ case $1 in
           printf "\n" >> $ARQPORT
          fi
         done
+      #->Criando regras iptables
+	/sbin/iptables -t nat -F LUW 2> /dev/null
+	/sbin/iptables -t nat -N LUW 2> /dev/null
+	/sbin/iptables -t nat -A PREROUTING -p tcp --dport $PI:$PF -j LUW
 ;;
 #->Definir porta para usuario
    -u)
