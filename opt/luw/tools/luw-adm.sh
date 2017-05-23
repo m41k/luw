@@ -56,10 +56,11 @@ echo "<form method='post' action='$proc'>"
 btop_home="<input type='submit' name='top' value='Monitor'>"
 btop_chek="<input type='submit' name='top' value='Check_Config'>"
 btop_ncon="<input type='submit' name='top' value='Users'>"
+btop_port="<input type='submit' name='top' value='Ports'>"
 btop_clon="<input type='submit' name='top' value='LIP'>"
 btop_atta="<input type='submit' name='top' value='Console'>"
 btop_exit="<input type='submit' name='top' value='Logout'>"
-echo "$btop_home $btop_chek $btop_ncon $btop_clon $btop_atta $btop_exit"
+echo "$btop_home $btop_chek $btop_ncon $btop_port $btop_clon $btop_atta $btop_exit"
 echo "<hr>"
 echo "</form>"
 
@@ -71,6 +72,7 @@ if [ $FORM_top = "Monitor" ]; then
 	echo "<td>"
 	echo "<iframe src=luw-mdc.sh frameborder='0' width='100%' height='100%'></iframe>"
 	echo "</td>"
+
 	echo "</tr>"
 	echo "</table>"
         exit 0
@@ -117,9 +119,49 @@ if [ $FORM_top = "Users" ]; then
  echo "</pre>"
         exit 0
 fi 2> /dev/null
+
+#===============================[BOTAO PORTS]====================================#
+if [ $FORM_top = "Ports" ]; then
+#-Criar tabela->
+ echo "<pre>"
+        echo "<form method='post' action='$proc'>"
+        echo "Criar tabela de Porta<br>"
+        echo Porta inicial:
+        echo "<input type='text' name='pi' maxlength='5' size='5'>"
+        echo Porta final:
+        echo "<input type='text' name='pf' maxlength='5' size='5'>"
+        echo "<input type='submit' value='Criar'>"
+        echo "</form>"
+ echo "</pre>"
+
+#-Associar usuario->
+ echo "<hr>"
+        users=( `ls /home` )
+        echo "<form method='post' action='$proc'>"
+        echo "Associar User<br>"
+        echo User:
+        echo "<select name='uport'>"
+         for (( u=0; u<${#users[@]}; u++ ))
+          do
+           echo "<option value=${users[$u]}>${users[$u]}"
+         done
+        echo  "</select>"
+        echo "<input type='submit' value='Add'>"
+        echo "</form>"
+ echo "</pre>"
+#-Exibir tabela->
+ echo "<hr>"
+ echo "Tabela"
+ echo "<pre>"
+   sudo /opt/luw/tools/luw-fw.sh -t
+ echo "</pre>"
+
+ exit 0
+fi
+
 #=============================[BOTAO LOGOUT]=====================================#
 if [ $FORM_top = "Logout" ]; then
-	bye='<meta http-equiv="refresh" content="0;url=http://foo:foo@'$SERVER_NAME'">'
+	bye='<meta http-equiv="refresh" content="0;url=http://foo:foo@'$SERVER_NAME:$SERVER_PORT'">'
 	echo $bye
 #echo "teste"
 #echo "<meta http-equiv='refresh' content='0';url='foo:foo@luw.servehttp.com'>"
@@ -179,6 +221,28 @@ if [ $FORM_duser != "" ]; then
    echo "</pre>"
    exit 0
 fi
+
+#--------------------------------------------------------------------------------#
+#                            FORM PORTS - EXECUCAO                               #
+#--------------------------------------------------------------------------------#
+#==================================[CRIAR TABELA]================================#
+if [ $FORM_pi != "" ] && [ $FORM_pf != "" ]; then
+   echo "<pre>"
+    sudo /opt/luw/tools/luw-fw.sh -c $FORM_pi $FORM_pf
+   echo Created new table
+   echo "</pre>"
+   exit 0
+fi
+
+#==================================[EXCLUSAO]=====================================#
+if [ $FORM_uport != "" ]; then
+   echo "<pre>"
+    sudo /opt/luw/tools/luw-fw.sh -u $FORM_uport
+   echo $FORM_uport associado a porta
+   echo "</pre>"
+   exit 0
+fi
+
 
 #===============================[CAPA PAGE]========================================#
 #if [ $FORM_top -z ]; then
