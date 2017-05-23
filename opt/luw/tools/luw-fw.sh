@@ -30,9 +30,13 @@ case $1 in
          fi
         done
       #->Criando regras iptables
+        REMPRE=`sudo iptables -t nat -S | grep "j LUW" | head -n 1 | sed 's/-A/-D/g'`
+
 	/sbin/iptables -t nat -F LUW 2> /dev/null
+        /sbin/iptables -t nat $REMPRE 2> /dev/null
 	/sbin/iptables -t nat -N LUW 2> /dev/null
 	/sbin/iptables -t nat -A PREROUTING -p tcp --dport $PI:$PF -j LUW
+
 ;;
 #->Definir porta para usuario
    -u)
