@@ -132,32 +132,42 @@ if [ $FORM_top = "Ports" ]; then
         echo "<input type='text' name='pf' maxlength='5' size='5'>"
         echo "<input type='submit' value='Criar'>"
         echo "</form>"
- echo "</pre>"
-
 #-Associar usuario->
  echo "<hr>"
         users=( `ls /home` )
         echo "<form method='post' action='$proc'>"
-        echo "Associar User<br>"
-        echo User:
+        echo "Associar porta livre a usuario<br>"
+        echo -n User:
         echo "<select name='uport'>"
          for (( u=0; u<${#users[@]}; u++ ))
           do
            echo "<option value=${users[$u]}>${users[$u]}"
          done
-        echo  "</select>"
-        echo "<input type='submit' value='Add'>"
+        echo  "</select> <input type='submit' value='Add'>"
         echo "</form>"
- echo "</pre>"
 #-Exibir tabela->
- echo "<hr>"
- echo "Tabela"
- echo "<pre>"
-   sudo /opt/luw/tools/luw-fw.sh -t
- echo "</pre>"
+ 	echo "<hr>"
+ 	echo "Tabela"
+	echo "<form method='post' action='$proc'>"
+	echo "<textarea name='contable' rows='10' cols='50'>"
 
+#sudo /opt/luw/tools/luw-fw.sh -t
+#cat /opt/luw/fw/portas.fw
+
+     array=( `cat /opt/luw/fw/portas.fw` )
+     #array=($FORM_contable)
+     for (( l=0; l<${#array[@]}; l++ ))
+      do
+       echo ${array[$l]}
+      done
+
+ 	echo "</textarea>"
+# 	echo "<input type='submit' value='Save'>"
+	echo "<input type='checkbox' name='check' value='on'>Desejo reescrever <input type='submit' value='Save'>"
+        echo "</form>"
+ 	echo "</pre>"
  exit 0
-fi
+fi 2> /dev/null
 
 #=============================[BOTAO LOGOUT]=====================================#
 if [ $FORM_top = "Logout" ]; then
@@ -184,7 +194,7 @@ if [ $FORM_top = "LIP" ]; then
 	echo "<a href='http://$SERVER_NAME/lip'>http://$SERVER_NAME/lip</a>"
         exit 0
 fi 2> /dev/null
-#===============================[BOTAO LIP]=====================================#
+#===============================[BOTAO CONSOLE]==================================#
 if [ $FORM_top = "Console" ]; then
         echo "<pre>"
 	echo "Desativado"
@@ -234,7 +244,7 @@ if [ $FORM_pi != "" ] && [ $FORM_pf != "" ]; then
    exit 0
 fi
 
-#==================================[EXCLUSAO]=====================================#
+#=================================[ASSOCIAR PORTA]===============================#
 if [ $FORM_uport != "" ]; then
    echo "<pre>"
     sudo /opt/luw/tools/luw-fw.sh -u $FORM_uport
@@ -243,8 +253,31 @@ if [ $FORM_uport != "" ]; then
    exit 0
 fi
 
+#==================================[ALTERAR TABELA]===============================#
+#if [ $FORM_contable != "" ]; then
+if [ $FORM_check = "on" ]; then
+   echo "<pre>"
+   TABTEMP=/tmp/portas.fw
+   rm $TABTEMP 2> /dev/null
+   array=($FORM_contable)
+     for (( l=0; l<${#array[@]}; l++ ))
+      do
+       echo ${array[$l]} >> $TABTEMP
+      done
+    sudo /opt/luw/tools/luw-fw.sh -r $TABTEMP
+    rm $TABTEMP 2> /dev/null
+    echo Tabela reescrita.
+   echo "</pre>"
+   exit 0
+   else
+    echo "Selecione o check-box para reescrever"
+   exit 0
+fi
+#echo $FORM_check
 
+#----------------------------------------------------------------------------------#
 #===============================[CAPA PAGE]========================================#
+#----------------------------------------------------------------------------------#
 #if [ $FORM_top -z ]; then
 	echo "<b>Monitor</b><br>Monitoramente de recursos do sistema<br><br>"
 	echo "<b>Check Config</b><br>Verificação da configuração do LXC<br><br>"

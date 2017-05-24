@@ -59,4 +59,11 @@ case $1 in
       /sbin/iptables -t nat -A $CHAIN -p tcp --dport $2 -j DNAT --to $3:$4
 ;;
 
+#->reescrever tabela
+   -r)
+      #sed utilizado para remover ^M do arquivo temporario
+      sed -e 's/\r//g' $2 > $ARQPORT 2> /dev/null
+;;
+
+
 esac
