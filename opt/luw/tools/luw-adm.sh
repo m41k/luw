@@ -150,19 +150,8 @@ if [ $FORM_top = "Ports" ]; then
  	echo "Tabela"
 	echo "<form method='post' action='$proc'>"
 	echo "<textarea name='contable' rows='10' cols='50'>"
-
-#sudo /opt/luw/tools/luw-fw.sh -t
-#cat /opt/luw/fw/portas.fw
-
-     array=( `cat /opt/luw/fw/portas.fw` )
-     #array=($FORM_contable)
-     for (( l=0; l<${#array[@]}; l++ ))
-      do
-       echo ${array[$l]}
-      done
-
+	        sudo /opt/luw/tools/luw-fw.sh -t
  	echo "</textarea>"
-# 	echo "<input type='submit' value='Save'>"
 	echo "<input type='checkbox' name='check' value='on'>Desejo reescrever <input type='submit' value='Save'>"
         echo "</form>"
  	echo "</pre>"
@@ -268,9 +257,6 @@ if [ $FORM_check = "on" ]; then
     rm $TABTEMP 2> /dev/null
     echo Tabela reescrita.
    echo "</pre>"
-   exit 0
-   else
-    echo "Selecione o check-box para reescrever"
    exit 0
 fi
 #echo $FORM_check
