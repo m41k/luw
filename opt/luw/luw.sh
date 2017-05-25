@@ -107,7 +107,7 @@ eval $ssh echo "7:console:Fst" >> $catcom 2> /dev/null
 #--------------------------------------------------------------------------------#
 #=======================EXECUTANDO COMANDO DO BOTAO CLICADO======================#
 if [ $FORM_botao != "" ]; then
-	ivn=`echo $FORM_botao | awk -F: {'print $1'}` 
+	ivn=`echo $FORM_botao | awk -F: {'print $1'}`
 	echo "<pre>"
 #	comand=`cat -n $catcom | grep $ivn | awk -F: {'print $3'}`
 	comand=`sed -n $ivn'p' $catcom | awk -F: {'print $3'}`
@@ -144,7 +144,7 @@ echo "</form>"
 #--------------------------------------------------------------------------------#
 
 #===============================[BOTAO HOME]=====================================#
-if [ $FORM_top = "Home" ]; then 
+if [ $FORM_top = "Home" ]; then
 
 fi 2> /dev/null
 
@@ -158,7 +158,7 @@ if [ $FORM_top = "Logout" ]; then
 fi 2> /dev/null
 
 #============================[BOTAO CHECKCONFIG]=================================#
-if [ $FORM_top = "Check Config" ]; then 
+if [ $FORM_top = "Check Config" ]; then
 	echo "<pre>"
 	echo "<h2>LXC-CHECKCONFIG</h1>"
 	lxc-checkconfig | sed 's/\[0;39m/ / ; s/\[1;32m/ /'
@@ -167,8 +167,8 @@ if [ $FORM_top = "Check Config" ]; then
 fi 2> /dev/null
 
 #===========================[BOTAO CREATE CONTAINER]=============================#
-if [ $FORM_top = "New Container" ]; then 
-#------->Baixa pagina de imagens LXC e cria lista das Distros usada no FORM 
+if [ $FORM_top = "New Container" ]; then
+#------->Baixa pagina de imagens LXC e cria lista das Distros usada no FORM
 	ipage=~/.imgpage.html
 	ilist=~/.imglist.lxc
 	wget -q http://images.linuxcontainers.org/ -O $ipage
@@ -253,6 +253,18 @@ fi 2> /dev/null
 
 #=================================[BOTAO PORT]==================================#
 if [ $FORM_top = "Port Forwarding" ]; then
+echo "<pre>"
+        echo -n "<h2>Port Config</h2>"
+#------>Solicita porta
+	echo -n "<form method='post' action='$luw'>"
+	echo -n "Solicitar Porta:"
+	echo -n "<select name='qport'>"
+  	echo -n "<option value=' '> "
+  	echo -n "<option value='1'>1"
+	echo -n "</select>"
+	echo -n	"<input type='submit' value='Solicitar'>"
+	echo -n	"</form>"
+
 #------->Criar array do containers existentes para o select
         wc_lslxc=`wc $lslxc | awk {'print $1'}`
         tt_cont=`expr $wc_lslxc - 1`
@@ -261,32 +273,32 @@ if [ $FORM_top = "Port Forwarding" ]; then
 #------->Localizar portas
         PORTUS=( `/opt/luw/tools/luw-fw.sh -s $REMOTE_USER` )
 
-#------->Form para criacao de container
-
-        echo "<form method='post' action='$luw'>"
-        echo "<h2>Port Forwarding</h2>"
-        echo "<select name='orig'>"
+#------->Form para associar porta
+#	echo "<br>"
+	echo -n "Forwarding"
+        echo -n "<form method='post' action='$luw'>"
+        echo -n "<select name='orig'>"
          for (( d=1; d<=${#orig[@]}; d++ ))
           do
-           echo "<option value=$orig[$d]>$orig[$d]"
+           echo -n "<option value=$orig[$d]>$orig[$d]"
          done
-        echo  "</select>"
-        echo ":"
-        echo "<input type='text' name='pcont' maxlength='6' size='6'>"
-        echo "<>"
-	echo $SERVER_NAME
-        echo ":"
-        echo "<select name='portus'>"
+        echo  -n "</select>"
+        echo -n ":"
+        echo -n "<input type='text' name='pcont' maxlength='6' size='6'>"
+        echo -n "<>"
+	echo -n $SERVER_NAME
+        echo -n ":"
+        echo -n "<select name='portus'>"
          for (( p=1; p<=${#PORTUS[@]}; p++ ))
           do
-           echo "<option value=$PORTUS[$p]>$PORTUS[$p]"
+           echo -n "<option value=$PORTUS[$p]>$PORTUS[$p]"
          done
-        echo  "</select>"
+        echo  -n "</select>"
 
-        echo  "<input type='submit' value='add'>"
-        echo  "</form>"
+        echo  -n "<input type='submit' value='add'>"
+        echo  -n "</form>"
 fi 2> /dev/null
-
+echo "</pre>"
 
 #--------------------------------------------------------------------------------#
 #			BOTAO CRIAR CONTAINER - EXECUCAO			 #
@@ -326,9 +338,15 @@ if [ $FORM_clone != "" ]; then
 fi 2> /dev/null
 
 #--------------------------------------------------------------------------------#
-#                       BOTAO ADD PORT CONTAINER - EXECUCAO                      #
+#                       BOTOES PORTS CONTAINER - EXECUCAO                        #
 #--------------------------------------------------------------------------------#
 #==================================LUW-FW========================================#
+#[SOLICITAR]
+if [ $FORM_qport = 1 ]; then
+	sudo /opt/luw/tools/luw-fw.sh -u $REMOTE_USER
+fi
+
+#[ASSOCIAR]
 if [ $FORM_pcont != "" ]; then
  if  echo $FORM_pcont | grep '[^[:alnum:]]' > /dev/null; then
   echo "<font color=red size=2><b>Invalid. Use numeric characters only.</b></font>"
