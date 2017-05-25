@@ -47,7 +47,7 @@
  #Preparando index
    cd /var/www/html/
    mv index.html index.bkp
-   wget https://raw.githubusercontent.com/m41k/luw/master/var/www/html/capal.png
+   wget https://raw.githubusercontent.com/m41k/luw/master/var/www/html/capamk.png
    wget https://raw.githubusercontent.com/m41k/luw/master/var/www/html/index.html
    wget https://github.com/m41k/luw/raw/master/var/www/html/man.tar
    tar -xf man.tar
