@@ -83,7 +83,9 @@
    mkdir /opt/luw/log/
    touch /opt/luw/log/creation 
    touch /opt/luw/log/acesso
+   touch /opt/luw/log/ports
    chown www-data:www-data /opt/luw/log/acesso
+   chown www-data:www-data /opt/luw/log/ports
    
   #Preparando /opt/luw/tools
    mkdir /opt/luw/tools
