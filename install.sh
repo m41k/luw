@@ -85,7 +85,7 @@
    touch /opt/luw/log/acesso
    touch /opt/luw/log/ports
    chown www-data:www-data /opt/luw/log/acesso
-   chown www-data:www-data /opt/luw/log/ports
+   chmod 646 /opt/luw/log/ports
    
   #Preparando /opt/luw/tools
    mkdir /opt/luw/tools
