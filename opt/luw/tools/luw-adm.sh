@@ -154,8 +154,11 @@ if [ $FORM_top = "Ports" ]; then
  	echo "</textarea>"
 	echo "<input type='checkbox' name='check' value='on'>Desejo reescrever <input type='submit' value='Save'>"
         echo "</form>"
+#-Exibir tabela->
+ 	echo "<hr>"
+	sudo /opt/luw/tools/luw-fw.sh -l
  	echo "</pre>"
- exit 0
+	 exit 0
 fi 2> /dev/null
 
 #=============================[BOTAO LOGOUT]=====================================#

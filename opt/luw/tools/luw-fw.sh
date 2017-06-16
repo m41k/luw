@@ -68,4 +68,8 @@ case $1 in
    -d)
 	sed -i s/$2//g $ARQPORT 2> /dev/null
 ;;
+#->listar iptables
+   -l)
+        /sbin/iptables -n -t nat -L LUW
+;;
 esac
