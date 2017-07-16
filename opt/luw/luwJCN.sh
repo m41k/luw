@@ -3,7 +3,6 @@
 #		PROJETO LUW - LXC Unprivileged Web				 #
 # 		CREATED BY: maik.alberto@hotmail.com				 #
 #--------------------------------------------------------------------------------#
-#Added suggestions Julio C. Neves
 
 eval `/opt/luw/proccgi $*`
 
@@ -42,7 +41,7 @@ hostname="localhost"
 #-->Secutiry Shell comand
 ssh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $REMOTE_USER@$hostname"
 #-->Corte para pegar nome do arquivo
-#JCN
+#Added suggestions Julio C. Neves
 #luw=`echo $0 | rev | cut -d / -f1 | rev`
 luw=${0##*/}
 
@@ -67,7 +66,7 @@ function Fss()
 cpid=~/.pid_$container.lxc
 port=`echo $[ 10000 + $[ RANDOM % 10000 ]]`
 echo $port
-#JCN
+#Added suggestions Julio C. Neves
 if netcat -z 127.0.0.1 $port; then
 #netcat -z 127.0.0.1 $port
 #if [ $? = 0 ]; then
@@ -112,7 +111,9 @@ eval $ssh echo "7:console:Fst" >> $catcom 2> /dev/null
 #		BOTOES CONTAINERS  - FILEIRA DE BOTOES - EXECUCAO		 #
 #--------------------------------------------------------------------------------#
 #=======================EXECUTANDO COMANDO DO BOTAO CLICADO======================#
-if [ $FORM_botao != "" ]; then
+#Added suggestions Julio C. Neves
+#ERRO AO ALTERAR
+if [ -n $FORM_botao ]; then
 	ivn=`echo $FORM_botao | awk -F: {'print $1'}`
 	echo "<pre>"
 #	comand=`cat -n $catcom | grep $ivn | awk -F: {'print $3'}`
@@ -121,7 +122,7 @@ if [ $FORM_botao != "" ]; then
 	var2=`echo $comand $container`
 	eval $var2
 	echo "</pre>"
-fi 2> /dev/null
+fi 2>&-
 
 #--------------------------------------------------------------------------------#
 #		    CRIANDO LISTA DE CONTAINERS EXISTENTES			 #
