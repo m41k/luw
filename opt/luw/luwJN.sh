@@ -67,8 +67,10 @@ function Fss()
 cpid=~/.pid_$container.lxc
 port=`echo $[ 10000 + $[ RANDOM % 10000 ]]`
 echo $port
-netcat -z 127.0.0.1 $port
-if [ $? = 0 ]; then
+#JCN
+if netcat -z 127.0.0.1 $port; then
+#netcat -z 127.0.0.1 $port
+#if [ $? = 0 ]; then
  Fss
 else
   shellinaboxd --no-beep -p $port -t -b$cpid -s "/:AUTH:HOME:/bin/bash /home/ubuntu/public_html/cgi-bin/apoio"
