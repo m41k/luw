@@ -45,6 +45,7 @@ ssh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $REMOTE_USE
 #JCN
 #luw=`echo $0 | rev | cut -d / -f1 | rev`
 luw=${0##*/}
+
 #-->Corte para pegar usuario na URL
 puser=$(echo $REQUEST_URI | cut -d "~" -f2 | cut -d "/" -f1)
 
@@ -56,7 +57,7 @@ if [ $puser != $REMOTE_USER ];
 	rodared='<meta http-equiv="refresh" content="0;url=http://'$SERVER_NAME'/~'$REMOTE_USER'/cgi-bin/'$luw'">'
 	echo $rodared
         exit 0
-fi 2>&-
+fi 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #  		   FUNCOES CONSOLE - SHELLINBOX - Fst enabled              	 #
@@ -66,10 +67,8 @@ function Fss()
 cpid=~/.pid_$container.lxc
 port=`echo $[ 10000 + $[ RANDOM % 10000 ]]`
 echo $port
-#JCN
-#netcat -z 127.0.0.1 $port
-#if [ $? = 0 ]; then
-if netcat -z 127.0.0.1 $port; then
+netcat -z 127.0.0.1 $port
+if [ $? = 0 ]; then
  Fss
 else
   shellinaboxd --no-beep -p $port -t -b$cpid -s "/:AUTH:HOME:/bin/bash /home/ubuntu/public_html/cgi-bin/apoio"
@@ -99,13 +98,13 @@ echo $goshell
 #	CATALOGO DE COMANDOS - INDICE:NOMEBOTAO:COMANDO - CRIACAO ARQUIVO	 #
 #--------------------------------------------------------------------------------#
 catcom=~/.catcom.lxc
-eval $ssh echo "1:info:$ssh lxc-info -n" > $catcom 2>&-
-eval $ssh echo "2:start:$ssh lxc-start -n" >> $catcom 2>&-
-eval $ssh echo "3:stop:$ssh lxc-stop -n" >> $catcom 2>&-
-eval $ssh echo "4:freeze:$ssh lxc-freeze -n" >> $catcom 2>&-
-eval $ssh echo "5:unfreeze:$ssh lxc-unfreeze -n" >> $catcom 2>&-
-eval $ssh echo "6:destroy:$ssh lxc-destroy -n" >> $catcom 2>&-
-eval $ssh echo "7:console:Fst" >> $catcom 2>&-
+eval $ssh echo "1:info:$ssh lxc-info -n" > $catcom 2> /dev/null
+eval $ssh echo "2:start:$ssh lxc-start -n" >> $catcom 2> /dev/null
+eval $ssh echo "3:stop:$ssh lxc-stop -n" >> $catcom 2> /dev/null
+eval $ssh echo "4:freeze:$ssh lxc-freeze -n" >> $catcom 2> /dev/null
+eval $ssh echo "5:unfreeze:$ssh lxc-unfreeze -n" >> $catcom 2> /dev/null
+eval $ssh echo "6:destroy:$ssh lxc-destroy -n" >> $catcom 2> /dev/null
+eval $ssh echo "7:console:Fst" >> $catcom 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #		BOTOES CONTAINERS  - FILEIRA DE BOTOES - EXECUCAO		 #
@@ -120,14 +119,14 @@ if [ $FORM_botao != "" ]; then
 	var2=`echo $comand $container`
 	eval $var2
 	echo "</pre>"
-fi 2>&-
+fi 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #		    CRIANDO LISTA DE CONTAINERS EXISTENTES			 #
 #--------------------------------------------------------------------------------#
 
 lslxc=~/.contdo$REMOTE_USER.lxc
-eval $ssh lxc-ls -f > $lslxc 2>&-
+eval $ssh lxc-ls -f > $lslxc 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #			HTML - BOTOES CABECALHO	- CRIACAO			 #
@@ -151,7 +150,7 @@ echo "</form>"
 #===============================[BOTAO HOME]=====================================#
 if [ $FORM_top = "Home" ]; then
 
-fi 2>&-
+fi 2> /dev/null
 
 #=============================[BOTAO LOGOUT]=====================================#
 if [ $FORM_top = "Logout" ]; then
@@ -160,7 +159,7 @@ if [ $FORM_top = "Logout" ]; then
 
 #echo "teste"
 #echo "<meta http-equiv='refresh' content='0';url='foo:foo@luw.servehttp.com'>"
-fi 2>&-
+fi 2> /dev/null
 
 #============================[BOTAO CHECKCONFIG]=================================#
 if [ $FORM_top = "Check Config" ]; then
@@ -169,7 +168,7 @@ if [ $FORM_top = "Check Config" ]; then
 	lxc-checkconfig | sed 's/\[0;39m/ / ; s/\[1;32m/ /'
 	echo "</pre>"
 	exit 0
-fi 2>&-
+fi 2> /dev/null
 
 #===========================[BOTAO CREATE CONTAINER]=============================#
 if [ $FORM_top = "New Container" ]; then
@@ -202,7 +201,7 @@ if [ $FORM_top = "New Container" ]; then
 	echo  "</select>"
 	echo  "<input type='submit' value='Criar'>"
 	echo  "</form>"
-fi 2>&-
+fi 2> /dev/null
 
 #=================================[BOTAO CLONE]==================================#
 if [ $FORM_top = "Clone" ]; then
@@ -225,7 +224,7 @@ if [ $FORM_top = "Clone" ]; then
 	echo "<input type='text' name='clone' maxlength='50' size='30'>"
   	echo  "<input type='submit' value='Clonar'>"
 	echo  "</form>"
-fi 2>&-
+fi 2> /dev/null
 
 #=================================[BOTAO ATTACH]==================================#
 if [ $FORM_top = "Attach Passwd" ]; then
@@ -254,7 +253,7 @@ if [ $FORM_top = "Attach Passwd" ]; then
         echo "<input type='password' name='pass' maxlength='50' size='30'>"
         echo  "<input type='submit' value='Execute'>"
         echo  "</form>"
-fi 2>&-
+fi 2> /dev/null
 
 #=================================[BOTAO PORT]==================================#
 if [ $FORM_top = "Port Forwarding" ]; then
@@ -302,7 +301,7 @@ echo "<pre>"
 
         echo  -n "<input type='submit' value='add'>"
         echo  -n "</form>"
-fi 2>&-
+fi 2> /dev/null
 echo "</pre>"
 
 #--------------------------------------------------------------------------------#
@@ -319,14 +318,14 @@ if [ $FORM_ncont != "" ]; then
 	release=`echo $FORM_dcont | awk -F_ {'print $2'}`
 	arquit=`echo $FORM_dcont | awk -F_ {'print $3'}`
 	echo "<pre>"
-	eval $ssh lxc-create -t download -n $contname -- -d $distro -r $release -a $arquit 2>&-
+	eval $ssh lxc-create -t download -n $contname -- -d $distro -r $release -a $arquit 2> /dev/null
 	echo "</pre>"
 #------->Log criacao de container
         logcreate=/opt/luw/log/creation
         echo $REMOTE_USER $contname $distro $release $arquit >> $logcreate
 #------->Fim Log
  fi
-fi 2>&-
+fi 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #                       BOTAO CLONE CONTAINER - EXECUCAO                         #
@@ -337,10 +336,10 @@ if [ $FORM_clone != "" ]; then
   echo "<font color=red size=2><b>Invalid name. Use alphanumeric characters only.</b></font>"
  else
         echo "<pre>"
-	 eval $ssh  lxc-clone -o $FORM_orig -n $FORM_clone 2>&-
+	 eval $ssh  lxc-clone -o $FORM_orig -n $FORM_clone 2> /dev/null
         echo "</pre>"
  fi
-fi 2>&-
+fi 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #                       BOTOES PORTS CONTAINER - EXECUCAO                        #
@@ -360,7 +359,7 @@ if [ $FORM_pcont != "" ]; then
 	  eval $ssh sudo /opt/luw/tools/luw-fw.sh -i $FORM_portus $FORM_orig $FORM_pcont
         echo "</pre>"
  fi
-fi 2>&-
+fi 2> /dev/null
 
 
 #--------------------------------------------------------------------------------#
@@ -369,21 +368,21 @@ fi 2>&-
 #==================================LXC-ATTACH====================================#
 if [ $FORM_pass != "" ]; then
         echo "<pre>"
-          eval $ssh lxc-start -n $FORM_orig 2>&-
+          eval $ssh lxc-start -n $FORM_orig 2> /dev/null
           eval $ssh lxc-attach -n $FORM_orig -- useradd -m $FORM_user -s /bin/bash
           eval $ssh lxc-attach -n $FORM_orig -- usermod -p $(openssl passwd $FORM_pass) $FORM_user
         echo Password changed. 
         #echo <a href=http://$SERVER_NAME/~$REMOTE_USER/cgi-bin/$FORM_orig.sh>Have Fun!</a>"
         echo "</pre>"
 
-fi 2>&-
+fi 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #   	    RECRIANDO LISTA DE CONTAINERS EXISTENTES - DUPLICATE	         #
 #--------------------------------------------------------------------------------#
 
 lslxc=~/.contdo$REMOTE_USER.lxc
-eval $ssh lxc-ls -f > $lslxc 2>&-
+eval $ssh lxc-ls -f > $lslxc 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #			    VARIAVES AUXILIARES SHELL				 #
