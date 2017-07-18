@@ -42,6 +42,8 @@ hostname="localhost"
 ssh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $REMOTE_USER@$hostname"
 #-->Corte para pegar nome do arquivo
 luw=`echo $0 | rev | cut -d / -f1 | rev`
+#JCN TIPS
+luw=${0##*/}
 #-->Corte para pegar usuario na URL
 puser=$(echo $REQUEST_URI | cut -d "~" -f2 | cut -d "/" -f1)
 
@@ -58,25 +60,6 @@ fi 2> /dev/null
 #--------------------------------------------------------------------------------#
 #  		   FUNCOES CONSOLE - SHELLINBOX - Fst enabled              	 #
 #--------------------------------------------------------------------------------#
-function Fss()
-{
-cpid=~/.pid_$container.lxc
-port=`echo $[ 10000 + $[ RANDOM % 10000 ]]`
-echo $port
-netcat -z 127.0.0.1 $port
-if [ $? = 0 ]; then
- Fss
-else
-  shellinaboxd --no-beep -p $port -t -b$cpid -s "/:AUTH:HOME:/bin/bash /home/ubuntu/public_html/cgi-bin/apoio"
-fi
-}
-
-function Fsp()
-{
-cpid=~/.pid_$container.lxc
-pidc=`cat $cpid`; kill -9 $pidc
-}
-
 function Fst()
 {
 
@@ -89,7 +72,6 @@ goshell='<meta http-equiv="refresh" content="0;url=http://'$SERVER_NAME'/~'$REMO
 echo $goshell
 
 }
-
 #--------------------------------------------------------------------------------#
 #	CATALOGO DE COMANDOS - INDICE:NOMEBOTAO:COMANDO - CRIACAO ARQUIVO	 #
 #--------------------------------------------------------------------------------#
