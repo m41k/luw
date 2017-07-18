@@ -41,7 +41,7 @@ hostname="localhost"
 #-->Secutiry Shell comand
 ssh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $REMOTE_USER@$hostname"
 #-->Corte para pegar nome do arquivo
-luw=`echo $0 | rev | cut -d / -f1 | rev`
+#luw=`echo $0 | rev | cut -d / -f1 | rev`
 #JCN TIPS
 luw=${0##*/}
 #-->Corte para pegar usuario na URL
