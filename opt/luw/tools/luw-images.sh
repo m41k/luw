@@ -9,7 +9,8 @@ echo -e "Content-type: text/html\n\n"
 
 #CONFIGURACAO
 URL="https://us.images.linuxcontainers.org"
-RLOCAL="/tmp/repo"
+#RLOCAL="/tmp/repo"
+RLOCAL="/opt/luw/repo/"
 CARD="/cardapio.luw"
 ARQ1="meta.tar.xz"
 ARQ2="rootfs.tar.xz"
