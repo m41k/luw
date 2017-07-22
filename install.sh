@@ -24,7 +24,7 @@
  #Instalando pacotes necessários
  #apt-get install gcc -y
  apt-get install zsh -y
- apt-get install lynx -y
+ #apt-get install lynx -y
  apt-get install shellinabox -y
  apt-get install openssh-server -y
  apt-get install psmisc -y
@@ -107,8 +107,12 @@
    chown luw-adm:luw-adm *.sh
    chmod +x *.sh
    echo luw-adm ALL=NOPASSWD:/opt/luw/tools/luw-user.sh >> /etc/sudoers
-  
-  #Editando /etc/sudoers
+
+  #Preparando /opt/luw/repo
+   mkdir /opt/luw/repo
+   chown luw-adm:luw-adm /opt/luw/repo
+
+ #Editando /etc/sudoers
    echo "www-data ALL=NOPASSWD:/usr/lib/cgi-bin/luw-tuser.sh" >> /etc/sudoers
    echo "ALL ALL=NOPASSWD:/opt/luw/tools/luw-fw.sh" >> /etc/sudoers
    
