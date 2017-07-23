@@ -12,6 +12,11 @@ if [[ $REMOTE_USER != "luw-adm" ]]; then
  exit 0
 fi
 
+if [[ $REMOTE_USER != "luw-adm" ]]; then
+ echo "<b>ACESSO RESTRITO</b>"
+ exit 0
+fi
+
 #CONFIGURACAO
 URL="https://us.images.linuxcontainers.org"
 #RLOCAL="/tmp/repo"
