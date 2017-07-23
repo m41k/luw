@@ -7,6 +7,11 @@ eval `/opt/luw/proccgi $*`
 
 echo -e "Content-type: text/html\n\n"
 
+if [[ $REMOTE_USER != "luw-adm" ]]; then
+ echo "<b>ACESSO RESTRITO</b>"
+ exit 0
+fi
+
 #CONFIGURACAO
 URL="https://us.images.linuxcontainers.org"
 #RLOCAL="/tmp/repo"
