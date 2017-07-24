@@ -60,8 +60,9 @@ btop_port="<input type='submit' name='top' value='Ports'>"
 btop_imag="<input type='submit' name='top' value='Images'>"
 btop_clon="<input type='submit' name='top' value='LIP'>"
 btop_atta="<input type='submit' name='top' value='Console'>"
+btop_logs="<input type='submit' name='top' value='Log'>"
 btop_exit="<input type='submit' name='top' value='Logout'>"
-echo "$btop_home $btop_chek $btop_ncon $btop_port $btop_imag $btop_clon $btop_atta $btop_exit"
+echo "$btop_home $btop_chek $btop_ncon $btop_port $btop_imag $btop_clon $btop_atta $btop_logs $btop_exit"
 echo "<hr>"
 echo "</form>"
 
@@ -204,6 +205,13 @@ fi 2> /dev/null
 if [ $FORM_top = "Console" ]; then
         echo "<pre>"
 	echo "Desativado"
+        exit 0
+fi 2> /dev/null
+#===============================[BOTAO LOG]==================================#
+if [ $FORM_top = "Log" ]; then
+        echo "<pre>"
+	tac /opt/luw/log/acesso
+        echo "</pre>"
         exit 0
 fi 2> /dev/null
 
