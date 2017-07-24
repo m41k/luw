@@ -333,6 +333,8 @@ if [ $FORM_ncont != "" ]; then
         logcreate=/opt/luw/log/creation
         echo $REMOTE_USER $contname $distro $release $arquit >> $logcreate
 #------->Fim Log
+#------->Limpeza de cache de memoria
+        sudo /opt/luw/tools/luw-fw.sh -clm
  fi
 fi 2> /dev/null
 
@@ -347,6 +349,8 @@ if [ $FORM_clone != "" ]; then
         echo "<pre>"
 	 eval $ssh  lxc-clone -o $FORM_orig -n $FORM_clone 2> /dev/null
         echo "</pre>"
+#------->Limpeza de cache de memoria
+        sudo /opt/luw/tools/luw-fw.sh -clm	
  fi
 fi 2> /dev/null
 
