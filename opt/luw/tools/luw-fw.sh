@@ -72,4 +72,8 @@ case $1 in
    -l)
         /sbin/iptables -n -t nat -L LUW
 ;;
+#->Limpar Memoria
+   -clm)
+        sudo sysctl -w vm.drop_caches=3
+;;
 esac
