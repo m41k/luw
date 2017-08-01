@@ -178,10 +178,7 @@ fi 2> /dev/null
 
 #=============================[BOTAO LOGOUT]=====================================#
 if [ $FORM_top = "Logout" ]; then
-	bye='<meta http-equiv="refresh" content="0;url=http://foo:foo@'$SERVER_NAME:$SERVER_PORT'">'
-	echo $bye
-#echo "teste"
-#echo "<meta http-equiv='refresh' content='0';url='foo:foo@luw.servehttp.com'>"
+	source /opt/luw/tools/luw-logout.sh
 fi 2> /dev/null
 
 #============================[BOTAO CHECKCONFIG]=================================#
