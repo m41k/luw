@@ -1,4 +1,8 @@
 #!/bin/bash
+#--------------------------------------------------------------------------------#
+#	 	      LUW-LOGOFF - Logoff user [java script]                     #
+#               	CREATED BY: maik.alberto@hotmail.com                     #
+#--------------------------------------------------------------------------------#
 cat <<EOF
         <script>
          if (document.execCommand("ClearAuthenticationCache"))
