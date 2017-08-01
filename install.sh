@@ -94,6 +94,7 @@
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-monitor.sh
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-user.sh
    wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-fw.sh
+   wget https://raw.githubusercontent.com/m41k/luw/master/opt/luw/tools/luw-logoff.sh
    chmod +x *
  
   #Ambiente ADM -Organizar-
