@@ -49,6 +49,7 @@
    mv index.html index.bkp
    wget https://raw.githubusercontent.com/m41k/luw/master/var/www/html/capamk.png
    wget https://raw.githubusercontent.com/m41k/luw/master/var/www/html/index.html
+   wget https://raw.githubusercontent.com/m41k/luw/master/var/www/html/401.html
    wget https://github.com/m41k/luw/raw/master/var/www/html/man.tar
    tar -xf man.tar
    rm -f man.tar
