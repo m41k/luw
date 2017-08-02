@@ -39,9 +39,9 @@ EOF
 #hostname=`hostname`
 hostname="localhost"
 #-->Secutiry Shell comand
-ssh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $REMOTE_USER@$hostname"
+SSH="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $REMOTE_USER@$hostname"
 #-->Corte para pegar nome do arquivo
-luw=`echo $0 | rev | cut -d / -f1 | rev`
+LUW=`echo $0 | rev | cut -d / -f1 | rev`
 #-->Corte para pegar usuario na URL
 puser=$(echo $REQUEST_URI | cut -d "~" -f2 | cut -d "/" -f1)
 
@@ -50,7 +50,7 @@ puser=$(echo $REQUEST_URI | cut -d "~" -f2 | cut -d "/" -f1)
 #--------------------------------------------------------------------------------#
 if [ $puser != $REMOTE_USER ];
   then
-	rodared='<meta http-equiv="refresh" content="0;url=http://'$SERVER_NAME'/~'$REMOTE_USER'/cgi-bin/'$luw'">'
+	rodared='<meta http-equiv="refresh" content="0;url=http://'$SERVER_NAME'/~'$REMOTE_USER'/cgi-bin/'$LUW'">'
 	echo $rodared
         exit 0
 fi 2> /dev/null
@@ -283,7 +283,7 @@ if [ $FORM_clone != "" ]; then
   echo "<font color=red size=2><b>Invalid name. Use alphanumeric characters only.</b></font>"
  else
         echo "<pre>"
-	 eval $ssh  lxc-clone -o $FORM_orig -n $FORM_clone 2> /dev/null
+	 eval $SSH  lxc-clone -o $FORM_orig -n $FORM_clone 2> /dev/null
         echo "</pre>"
 #------->Limpeza de cache de memoria
         sudo /opt/luw/tools/luw-fw.sh -clm	
@@ -305,7 +305,7 @@ if [ $FORM_pcont != "" ]; then
   echo "<font color=red size=2><b>Invalid. Use numeric characters only.</b></font>"
  else
         echo "<pre>"
-	  eval $ssh sudo /opt/luw/tools/luw-fw.sh -i $FORM_portus $FORM_orig $FORM_pcont
+	  eval $SSH sudo /opt/luw/tools/luw-fw.sh -i $FORM_portus $FORM_orig $FORM_pcont
         echo "</pre>"
  fi
 fi 2> /dev/null
@@ -317,9 +317,9 @@ fi 2> /dev/null
 #==================================LXC-ATTACH====================================#
 if [ $FORM_pass != "" ]; then
         echo "<pre>"
-          eval $ssh lxc-start -n $FORM_orig 2> /dev/null
-          eval $ssh lxc-attach -n $FORM_orig -- useradd -m $FORM_user -s /bin/bash
-          eval $ssh lxc-attach -n $FORM_orig -- usermod -p $(openssl passwd $FORM_pass) $FORM_user
+          eval $SSH lxc-start -n $FORM_orig 2> /dev/null
+          eval $SSH lxc-attach -n $FORM_orig -- useradd -m $FORM_user -s /bin/bash
+          eval $SSH lxc-attach -n $FORM_orig -- usermod -p $(openssl passwd $FORM_pass) $FORM_user
         echo Password changed. 
         #echo <a href=http://$SERVER_NAME/~$REMOTE_USER/cgi-bin/$FORM_orig.sh>Have Fun!</a>"
         echo "</pre>"
@@ -331,7 +331,7 @@ fi 2> /dev/null
 #--------------------------------------------------------------------------------#
 
 lslxc=~/.contdo$REMOTE_USER.lxc
-eval $ssh lxc-ls -f > $lslxc 2> /dev/null
+eval $SSH lxc-ls -f > $lslxc 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #			    VARIAVES AUXILIARES SHELL				 #
