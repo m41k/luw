@@ -127,7 +127,7 @@ eval $ssh lxc-ls -f > $lslxc 2> /dev/null
 #--------------------------------------------------------------------------------#
 #			HTML - BOTOES CABECALHO	- CRIACAO			 #
 #--------------------------------------------------------------------------------#
-echo "<form method='post' action='$luw'>"
+echo "<form method='post' action='$LUW'>"
 btop_home="<input type='submit' name='top' value='Home'>"
 btop_chek="<input type='submit' name='top' value='Check Config'>"
 btop_ncon="<input type='submit' name='top' value='New Container'>"
@@ -182,7 +182,7 @@ if [ $FORM_top = "Clone" ]; then
 
 #------->Form para criacao de container
 
-	echo "<form method='post' action='$luw'>"
+	echo "<form method='post' action='$LUW'>"
 	echo "<h2>Clone Container</h2>"
 	echo "<select name='orig'>"
          for (( d=1; d<=${#orig[@]}; d++ ))
@@ -205,7 +205,7 @@ if [ $FORM_top = "Attach Passwd" ]; then
 
 #------->Form para criacao de container
 
-        echo "<form method='post' action='$luw'>"
+        echo "<form method='post' action='$LUW'>"
         echo "<h2>Define password:</h2>"
         echo "Container:"
         echo "<select name='orig'>"
@@ -230,7 +230,7 @@ if [ $FORM_top = "Port Forwarding" ]; then
 echo "<pre>"
         echo -n "<h2>Port Config</h2>"
 #------>Solicita porta
-	echo -n "<form method='post' action='$luw'>"
+	echo -n "<form method='post' action='$LUW'>"
 	echo -n "Solicitar Porta:"
 	echo -n "<select name='qport'>"
   	echo -n "<option value=' '> "
@@ -250,7 +250,7 @@ echo "<pre>"
 #------->Form para associar porta
 #	echo "<br>"
 	echo -n "Forwarding"
-        echo -n "<form method='post' action='$luw'>"
+        echo -n "<form method='post' action='$LUW'>"
         echo -n "<select name='orig'>"
          for (( d=1; d<=${#orig[@]}; d++ ))
           do
