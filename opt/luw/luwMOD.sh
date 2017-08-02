@@ -94,13 +94,13 @@ echo $goshell
 #	CATALOGO DE COMANDOS - INDICE:NOMEBOTAO:COMANDO - CRIACAO ARQUIVO	 #
 #--------------------------------------------------------------------------------#
 catcom=~/.catcom.lxc
-eval $ssh echo "1:info:$ssh lxc-info -n" > $catcom 2> /dev/null
-eval $ssh echo "2:start:$ssh lxc-start -n" >> $catcom 2> /dev/null
-eval $ssh echo "3:stop:$ssh lxc-stop -n" >> $catcom 2> /dev/null
-eval $ssh echo "4:freeze:$ssh lxc-freeze -n" >> $catcom 2> /dev/null
-eval $ssh echo "5:unfreeze:$ssh lxc-unfreeze -n" >> $catcom 2> /dev/null
-eval $ssh echo "6:destroy:$ssh lxc-destroy -n" >> $catcom 2> /dev/null
-eval $ssh echo "7:console:Fst" >> $catcom 2> /dev/null
+eval $SSH echo "1:info:$SSH lxc-info -n" > $catcom 2> /dev/null
+eval $SSH echo "2:start:$SSH lxc-start -n" >> $catcom 2> /dev/null
+eval $SSH echo "3:stop:$SSH lxc-stop -n" >> $catcom 2> /dev/null
+eval $SSH echo "4:freeze:$SSH lxc-freeze -n" >> $catcom 2> /dev/null
+eval $SSH echo "5:unfreeze:$SSH lxc-unfreeze -n" >> $catcom 2> /dev/null
+eval $SSH echo "6:destroy:$SSH lxc-destroy -n" >> $catcom 2> /dev/null
+eval $SSH echo "7:console:Fst" >> $catcom 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #		BOTOES CONTAINERS  - FILEIRA DE BOTOES - EXECUCAO		 #
@@ -122,7 +122,7 @@ fi 2> /dev/null
 #--------------------------------------------------------------------------------#
 
 lslxc=~/.contdo$REMOTE_USER.lxc
-eval $ssh lxc-ls -f > $lslxc 2> /dev/null
+eval $SSH lxc-ls -f > $lslxc 2> /dev/null
 
 #--------------------------------------------------------------------------------#
 #			HTML - BOTOES CABECALHO	- CRIACAO			 #
@@ -375,7 +375,7 @@ function botao()
 #-------> Inicio da tabela dos caontaines
 #-------> html misurado com shell - vitamina old school
 if [ -s $lslxc ]; then
-echo "<form method='post' action='$luw'>"
+echo "<form method='post' action='$LUW'>"
  echo  "<table border=1>"
 	echo   "<tr>"
 	echo    "<td bgcolor=F5F5F5><pre>"
