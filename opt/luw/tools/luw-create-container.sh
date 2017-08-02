@@ -9,7 +9,7 @@ case $1 in
  new)
         DISTROS=(`cat /opt/luw/repo/cardapio.luw | awk -F";" {'print $1"_"$2"_"$3'}`)
 #FORM PARA CRIACAO DE CONTAINER
-        echo "<form method='post' action='$luw'>"
+        echo "<form method='post' action='$LUW'>"
         echo "<h2>Novo Container</h2>"
         echo "Name:"
         echo " <input type='text' name='NCONT' maxlength='50' size='30'>"
@@ -39,8 +39,8 @@ case $1 in
                 eval mkdir -p $HOME/.cache/lxc/download/$DISTRO/$RELEASE/$ARQUIT/default/
                 eval cp /opt/luw/repo/images/$DISTRO/$RELEASE/$ARQUIT/default/* $HOME/.cache/lxc/download/$DISTRO/$RELEASE/$ARQUIT/default/
                 eval tar -Jxf $HOME/.cache/lxc/download/$DISTRO/$RELEASE/$ARQUIT/default/meta.tar.xz -C $HOME/.cache/lxc/download/$DISTRO/$RELEASE/$ARQUIT/default/
-#DEBUG  echo "$ssh lxc-create -t download -n $CONTNAME -- -d $DISTRO -r $RELEASE -a $ARQUIT 2> /dev/null"
-                eval $ssh lxc-create -t download -n $CONTNAME -- -d $DISTRO -r $RELEASE -a $ARQUIT 2> /dev/null
+#DEBUG  echo "$SSH lxc-create -t download -n $CONTNAME -- -d $DISTRO -r $RELEASE -a $ARQUIT 2> /dev/null"
+                eval $SSH lxc-create -t download -n $CONTNAME -- -d $DISTRO -r $RELEASE -a $ARQUIT 2> /dev/null
                 echo "</pre>"
 #LOG CRIACAO DE CONTAINER
                 LOGCREATE=/opt/luw/log/creation
